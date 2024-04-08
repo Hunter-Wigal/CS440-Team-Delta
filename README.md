@@ -17,3 +17,11 @@ After activating the virtual environment, navigate into the repository directory
 
 ## Things to note
 *  Before pushing to the repository, if any new packages were installed, make sure to run 'pip freeze > requirements.txt' to update the requirements file
+
+
+## Current Database Setup
+The application is currently setup to use MySQL on your local machine. The create_db.py file in the top level delta_marketplace directory will create the database for you if the correct user and password are specified in the settings.py file. If your MySQL password is anything other than 'password', make sure to either change your MySQL password or change the password listed under DATABASES in settings.py. 
+
+After installing the requirements with the command above, execute the create_db.py file to create the required database.
+
+Then call the manage.py file with 'python manage.py migrate' to apply the database changes.

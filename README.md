@@ -9,7 +9,7 @@ Clone this repository into a folder with a virtual environment already set up or
 
 
 After activating the virtual environment, navigate into the repository directory, and run 'pip install -r requirements.txt' to install dependencies
-
+Before running the sever, setup the database using the information provided in the Current Database Setup section of this document
 
 ## To Run the Server
 *  Navigate into the delta_marketplace directory, where manage.py is located

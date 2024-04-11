@@ -9,8 +9,8 @@ database = mysql.connector.connect(
 # cursor
 cursor = database.cursor()
 
-# If you get a password error, uncomment and run the line below
-# cursor.execute("ALTER USER 'root'@'localhost' IDENTIFIED BY 'password';")
+# If you get a password error, run the line below in MySQL Workbench
+# ALTER USER 'root'@'localhost' IDENTIFIED BY 'password';
 
 # Create database
 cursor.execute("CREATE DATABASE IF NOT EXISTS delta_marketplace")

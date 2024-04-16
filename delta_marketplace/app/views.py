@@ -7,5 +7,5 @@ def store(request):
 def listing(request):
     return render(request, "layouts/listing.html")
 
-def user(request):
-    return render(request, "layouts/user.html")
+def account(request):
+    return render(request, "layouts/account.html")

@@ -9,15 +9,12 @@
   </head>
 
   <style>
-    body {
-      background-color:rgb(98, 96, 96);
-      color:rgb(122, 195, 221);
-    }
+  
   </style>
 
   <body>
     <!-- Navigation Bar, eventually needs a search bar -->
-    <navbar class="column" style="">
+    <nav class="navbar bg-body-secondary" style="">
       <!-- Styling for Navbar -->
       <style>
         .nav-link:active{
@@ -33,52 +30,51 @@
             color:hsl(0, 0%, 20%);
         }
       </style>
+        <ul class="nav nav-underline" style="margin: 12px; justify-content:space-evenly">
+            <li class="nav-item row">  
+              <a href="/" style="border-color:black; border-width:10px; width:30px; height:30px; background-color:red;">
+                <img src="" style="height:10px; width:10px;">
+              </a>
+            </li>
 
-      <ul class="nav nav-underline" style="margin: 12px;">
-          <a href="/" style="border-color:black; border-width:10px; width:30px; height:30px; background-color:red;">
-            <img src="" style="height:10px; width:10px;">
-          </a>
+            <li class="nav-item row">
+              <a class="nav-link active" href="/">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-play" viewBox="0 0 20 20">
+                  <path d="M10.804 8 5 4.633v6.734zm.792-.696a.802.802 0 0 1 0 1.392l-6.363 3.692C4.713 12.69 4 12.345 4 11.692V4.308c0-.653.713-.998 1.233-.696z"/>
+                </svg>
+                Store
+              </a>
+            </li>
 
-          <li class="nav-item row">
-            <a class="nav-link active" href="/">
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-play" viewBox="0 0 16 16">
-                <path d="M10.804 8 5 4.633v6.734zm.792-.696a.802.802 0 0 1 0 1.392l-6.363 3.692C4.713 12.69 4 12.345 4 11.692V4.308c0-.653.713-.998 1.233-.696z"/>
-              </svg>
-              Store
-            </a>
-          </li>
-
-          <li class="nav-item row">
-            <a class="nav-link" href="account">
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-play" viewBox="0 0 16 16">
-                <path d="M10.804 8 5 4.633v6.734zm.792-.696a.802.802 0 0 1 0 1.392l-6.363 3.692C4.713 12.69 4 12.345 4 11.692V4.308c0-.653.713-.998 1.233-.696z"/>
-              </svg>
-              My Account
-            </a>
-          </li>
-          
-          <li class="nav-item row">
-            <a class="nav-link" href="inventory">
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-play" viewBox="0 0 16 16">
-                <path d="M10.804 8 5 4.633v6.734zm.792-.696a.802.802 0 0 1 0 1.392l-6.363 3.692C4.713 12.69 4 12.345 4 11.692V4.308c0-.653.713-.998 1.233-.696z"/>
-              </svg>
-              Inventory
-            </a>
-          </li>
-
-          <li class="nav-item row">
-            <form class="d-flex" role="search">
-              <input class="form-control me-2" type="search" placeholder="Find a Game" aria-label="Search">
-            </form>
-          </li>
+            <li class="nav-item row">
+              <a class="nav-link" href="account">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-play" viewBox="0 0 20 20">                  <path d="M10.804 8 5 4.633v6.734zm.792-.696a.802.802 0 0 1 0 1.392l-6.363 3.692C4.713 12.69 4 12.345 4 11.692V4.308c0-.653.713-.998 1.233-.696z"/>
+                </svg>
+                My Account
+              </a>
+            </li>
             
-          <li class="nav-item row">
-            <button type="button" style="align-self:flex-end" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#loginModal">
-              Login/Signup
-            </button>
-          </li>
-        </ul>
-    </navbar>
+            <li class="nav-item row">
+              <a class="nav-link" href="inventory">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-play" viewBox="0 0 20 20">                  <path d="M10.804 8 5 4.633v6.734zm.792-.696a.802.802 0 0 1 0 1.392l-6.363 3.692C4.713 12.69 4 12.345 4 11.692V4.308c0-.653.713-.998 1.233-.696z"/>
+                </svg>
+                Inventory
+              </a>
+            </li>
+
+            <li class="nav-item row">
+              <form class="d-flex" role="search">
+                <input class="form-control me-2" type="search" placeholder="Find a Game" aria-label="Search">
+              </form>
+            </li>
+              
+            <li class="nav-item row">
+              <button type="button" style="align-self:flex-end" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#loginModal">
+                Login/Signup
+              </button>
+            </li>
+          </ul>
+    </nav>
 
 <!-- Login Modal -->
 <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModal" aria-hidden="true">

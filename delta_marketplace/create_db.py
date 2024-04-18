@@ -14,5 +14,3 @@ cursor = database.cursor()
 
 # Create database
 cursor.execute("CREATE DATABASE IF NOT EXISTS delta_marketplace")
-
-print("Created database")

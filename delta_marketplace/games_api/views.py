@@ -5,8 +5,7 @@ import mysql.connector
 import json
 import os
 
-
-def fetch_games():
+def execute_query(query: str):
     database = mysql.connector.connect(
         host=os.environ.get("DATABASE_HOST"),
         user=os.environ.get("USER"),
@@ -17,9 +16,16 @@ def fetch_games():
     # cursor
     cursor = database.cursor()
 
-    cursor.execute("""SELECT * FROM Games;""")
+    cursor.execute(query)
 
     contents = cursor.fetchall()
+    
+    return contents
+
+# Fetch games with a specific game query and return a list of dictionaries
+def fetch_games(query: str):
+
+    contents = execute_query(query)
 
     games = []
 
@@ -43,7 +49,7 @@ def fetch_games():
 # Create your views here.
 def get_all(request: HttpRequest):
 
-    to_return = fetch_games()
+    to_return = fetch_games("""SELECT * FROM Games;""")
 
     return JsonResponse(to_return)
 
@@ -52,18 +58,17 @@ def get_all(request: HttpRequest):
 def get_games(request: HttpRequest):
     if request.method == "GET":
 
-        # database = mysql.connector.connect(
-        #     host=os.environ.get("DATABASE_HOST"),
-        #     user=os.environ.get("USER"),
-        #     passwd=os.environ.get("PASSWORD"),
-        #     database="delta_marketplace",
-        # )
-
         # Get the game passed to the request
         game_name = request.GET.get("g")
 
-        # Get all games from database (should probably change to a procedure or something. wouldn't scale well with a lot of games)
-        available_games = fetch_games()['games']
+        # Get all games from database
+        query  = f"SELECT * FROM Games WHERE LOWER(title) LIKE '%{game_name}%';"
+        print(query)
+        available_games = fetch_games(query)
+        
+        print(available_games)
+        if len(available_games) > 0:
+            available_games = available_games['games']
         
         selected_games = []
         

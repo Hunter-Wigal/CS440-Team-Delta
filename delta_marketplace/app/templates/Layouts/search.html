@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% load static %}
+{%block content%}
+
+<head>
+    <title>Search</title>
+    <link rel="stylesheet" href="{% static 'styles/style.css' %}">
+</head>
+
+<script>
+    // JavaScript code to reset the URL on page reload
+window.onload = function() {
+    // Check if there are URL parameters
+    if (window.location.search) {
+        // Replace the current URL with a new URL without parameters
+        window.history.replaceState({}, document.title, window.location.pathname);
+    }
+}
+</script>
+
+<body>
+    <div class="container">
+        <div class="row">
+            <h2 class="col mb-3">Search for Games</h2>
+        </div>
+        <div class="row">
+            <p>Enter the name of a game or relevant word to search for here</p>
+        </div>
+        <div class="row">
+            <form method="GET">
+                <input type="text" name="gamesearch" placeholder="Search"/>
+                <input type="submit" class="btn btn-outline-primary" value="Search">
+            </form>
+        </div>
+
+        <div class="row">
+            {% if results is not none%}
+                {% for result in results%}
+                    <div class="col game m-1">
+                        <p>{{result.name}}</p>
+                    </div>
+                {% endfor %}
+            {%else %}
+                <h2>No games matching the term available. Please search for something else</h2>
+            {% endif %}
+        </div>
+    </div>
+</body>
+
+{% endblock %}

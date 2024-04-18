@@ -2,6 +2,7 @@ import mysql.connector
 import datetime
 from mysql.connector.errors import IntegrityError
 
+
 database = mysql.connector.connect(
     host='localhost',
     user='root',

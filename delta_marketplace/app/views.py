@@ -9,3 +9,6 @@ def listing(request):
 
 def account(request):
     return render(request, "layouts/account.html")
+
+def inventory(request):
+    return render(request, "layouts/inventory.html")

@@ -18,10 +18,14 @@ img {
 
 .game{
     border: 1px solid black;
+    max-width: 200px;
     /* width: 300px; */
 }
 
 /* Search page */
-
+.search-bar{
+    position: relative;
+    display: inline-flex;
+}
 
 /* End search page */

@@ -9,13 +9,38 @@
 
 <script>
     // JavaScript code to reset the URL on page reload
-window.onload = function() {
-    // Check if there are URL parameters
-    if (window.location.search) {
-        // Replace the current URL with a new URL without parameters
-        window.history.replaceState({}, document.title, window.location.pathname);
+    window.onload = function () {
+        // Check if there are URL parameters
+        if (window.location.search) {
+            // Replace the current URL with a new URL without parameters
+            window.history.replaceState({}, document.title, window.location.pathname);
+        }
+
+
+        for(item of document.getElementsByClassName("dropdown-item")){
+            item.addEventListener("click", updateGenre);
+        }
     }
-}
+
+    // Temporay fix because the bootstrap dropdown wasn't working
+    function updateGenre(event){
+        let btn = document.getElementById("genre-button");
+        btn.innerText = event.currentTarget.innerText;
+
+
+        document.getElementById("genre-select").value = event.currentTarget.innerText;
+    }
+
+
+
+    // function setvalue() {
+    //  let btn = document.getElementById("genre-btn");
+
+    //let currText = btn.innerText;
+
+    //btn.value = currText;
+    //}
+
 </script>
 
 <body>
@@ -28,20 +53,43 @@ window.onload = function() {
         </div>
         <div class="row">
             <form method="GET">
-                <input type="text" name="gamesearch" placeholder="Search"/>
-                <input type="submit" class="btn btn-outline-primary" value="Search">
+
+                <input class="search-bar" style="display: inline-flex" type="text" name="gamesearch"
+                    placeholder="Search"/>
+
+                <!-- Current solution to passing a genre to the request that the search view can see -->
+                <input name="genre" value="none" hidden id="genre-select">
+
+                <div class="btn-group">
+                    <button type="button" class="btn btn-info dropdown-toggle mb-2" data-bs-toggle="dropdown"
+                        aria-expanded="false" id="genre-button" name="genre" value="genre">
+                        Genre
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li class="dropdown-item">Action</li>
+                        <li class="dropdown-item">Adventure</li>
+                        <li class="dropdown-item">FPS</li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li class="dropdown-item">Puzzle</li>
+                        
+                    </ul>
+                </div>
+                <input type="submit" class="btn btn-outline-primary col-2 m-auto" style="display: block" value="Search">
             </form>
         </div>
 
-        <div class="row">
+        <div class="row justify-content-center">
             {% if results is not none%}
-                {% for result in results%}
-                    <div class="col game m-1">
-                        <p>{{result.name}}</p>
-                    </div>
-                {% endfor %}
+            {% for result in results%}
+            <div class="col-4 game m-1">
+                <p>{{result.name}}</p>
+                <p>{{result.genre}}</p>
+            </div>
+            {% endfor %}
             {%else %}
-                <h2>No games matching the term available. Please search for something else</h2>
+            <h2>No games matching the term available. Please search for something else</h2>
             {% endif %}
         </div>
     </div>

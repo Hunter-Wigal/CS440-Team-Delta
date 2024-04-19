@@ -54,19 +54,25 @@ def search(request: HttpRequest, search_results=[]):
     
     # Check for get request and parameters in the request
     if(request.method == 'GET' and len(request.GET) > 0):
-        to_search = request.GET.get('gamesearch', None)
+        to_search = request.GET.get('gamesearch', 'none')
+        genre = request.GET.get('genre', 'none')
         
-        resp = requests.get('http://127.0.0.1:8000/api/games/get_games?g=%s' % to_search)
+        if to_search == '':
+            to_search = 'none'
+        
+        print(request.GET)
+        
+            
+        resp = requests.get('http://127.0.0.1:8000/api/games/get_games?s=%s&g=%s' % (to_search, genre))
         search_results = game_resp_to_list(resp)
         # print('http://127.0.0.1:8000/api/games/get_games?g=%s' % to_search)
-        
 
         if len(search_results) < 1:
             search_results = None
             print("No results found")
 
         # Search can't be an empty string
-        if(len(to_search) < 1):
+        if(len(to_search) < 1 and genre == 'none'):
             search_results = None
 
         

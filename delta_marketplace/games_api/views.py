@@ -54,35 +54,31 @@ def get_all(request: HttpRequest):
     return JsonResponse(to_return)
 
 
-# Inefficiently returns games that have a matched term in the passed GET parameter
+# Returns games that have a matched term in the passed GET parameter
 def get_games(request: HttpRequest):
     if request.method == "GET":
 
         # Get the game passed to the request
-        game_name = request.GET.get("g")
+        game_name = request.GET.get("s").lower()
+        genre_choice = request.GET.get('g').lower()
+        
+        # Change the operator to select genres if the name isn't specified
+        operator = "OR" if game_name == 'none' or genre_choice == 'none' else 'AND'
 
         # Get all games from database
-        query  = f"SELECT * FROM Games WHERE LOWER(title) LIKE '%{game_name}%';"
-        print(query)
+        query  = f"SELECT * FROM Games WHERE LOWER(title) LIKE '%{game_name}%' {operator} LOWER(genre) LIKE '%{genre_choice}%';"
+        
         available_games = fetch_games(query)
         
-        print(available_games)
+        print(game_name)
+        
+        # Check if games were actually found before indexing the dictionary
         if len(available_games) > 0:
             available_games = available_games['games']
         
-        selected_games = []
-        
-        game_name = game_name.lower()
-        # Select only games that match the search
-        for game in available_games:
-            if game_name in game['name'].lower():
-                selected_games.append(game)
- 
-                
-        # print(selected_games)
 
         to_return = {}
-        to_return['games'] = selected_games
+        to_return['games'] = available_games
         
         return JsonResponse(to_return)
     

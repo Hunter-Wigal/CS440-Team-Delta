@@ -4,7 +4,7 @@
 
 <head>
     <title>Search</title>
-    <link rel="stylesheet" href="{% static 'styles/style.css' %}">
+    <!-- <link rel="stylesheet" href="{% static 'styles/style.css' %}"> -->
 </head>
 
 <script>
@@ -30,16 +30,6 @@
 
         document.getElementById("genre-select").value = event.currentTarget.innerText;
     }
-
-
-
-    // function setvalue() {
-    //  let btn = document.getElementById("genre-btn");
-
-    //let currText = btn.innerText;
-
-    //btn.value = currText;
-    //}
 
 </script>
 
@@ -77,18 +67,29 @@
 
                     <button type="submit" class="btn btn-outline-primary" value="Search">Search</button>
                 </div>
-  
+
             </form>
-    
+
         </div>
 
         <div class="row justify-content-center">
             {% if results is not none%}
             {% for result in results%}
-            <div class="col-4 game m-1">
-                <p>{{result.name}}</p>
-                <p>{{result.genre}}</p>
+            <!-- <div class="row"> -->
+            <div class="card-custom">
+                <img src="{{result.image}}" alt="An image of {{result.name}}" class="card-image">
+                <div class="card-body-custom">
+                    <h4 class="game-name">{{result.name}}</h4>
+                    <div class="game-content">
+                        <p><b>Genre:</b> {{result.genre}}</p>
+                        <p><b>Rating:</b> {{result.esrb}}</p>
+ 
+                    </div>
+                    <button class="btn btn-success me-0">Rent $TBD</button>
+                    <button class="btn btn-info">Buy $TBD</button>
+                </div>
             </div>
+            <!-- </div> -->
             {% endfor %}
             {%else %}
             <h2>No games matching the term available. Please search for something else</h2>

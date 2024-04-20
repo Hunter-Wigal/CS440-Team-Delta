@@ -70,8 +70,6 @@ def get_games(request: HttpRequest):
         
         available_games = fetch_games(query)
         
-        print(game_name)
-        
         # Check if games were actually found before indexing the dictionary
         if len(available_games) > 0:
             available_games = available_games['games']

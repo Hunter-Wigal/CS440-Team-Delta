@@ -17,13 +17,13 @@
         }
 
 
-        for(item of document.getElementsByClassName("dropdown-item")){
+        for (item of document.getElementsByClassName("dropdown-item")) {
             item.addEventListener("click", updateGenre);
         }
     }
 
     // Temporay fix because the bootstrap dropdown wasn't working
-    function updateGenre(event){
+    function updateGenre(event) {
         let btn = document.getElementById("genre-button");
         btn.innerText = event.currentTarget.innerText;
 
@@ -51,17 +51,16 @@
         <div class="row">
             <p>Enter the name of a game or relevant word to search for here</p>
         </div>
-        <div class="row">
-            <form method="GET">
 
-                <input class="search-bar" style="display: inline-flex" type="text" name="gamesearch"
-                    placeholder="Search"/>
-
+        <div class="row justify-content-center">
+            <form method="GET" class="input-group w-50">
+                <input class="search-bar form-control" style="display: inline-flex" type="text" name="gamesearch"
+                    placeholder="Search" />
                 <!-- Current solution to passing a genre to the request that the search view can see -->
                 <input name="genre" value="none" hidden id="genre-select">
 
                 <div class="btn-group">
-                    <button type="button" class="btn btn-info dropdown-toggle mb-2" data-bs-toggle="dropdown"
+                    <button type="button" class="btn btn-info dropdown-toggle" data-bs-toggle="dropdown"
                         aria-expanded="false" id="genre-button" name="genre" value="genre">
                         Genre
                     </button>
@@ -73,11 +72,14 @@
                             <hr class="dropdown-divider">
                         </li>
                         <li class="dropdown-item">Puzzle</li>
-                        
+
                     </ul>
+
+                    <button type="submit" class="btn btn-outline-primary" value="Search">Search</button>
                 </div>
-                <input type="submit" class="btn btn-outline-primary col-2 m-auto" style="display: block" value="Search">
+  
             </form>
+    
         </div>
 
         <div class="row justify-content-center">

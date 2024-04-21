@@ -25,3 +25,5 @@ The application is currently setup to use MySQL on your local machine. The creat
 After installing the requirements with the command above, execute the create_db.py file to create the required database.
 
 Then call the manage.py file with 'python manage.py migrate' to apply the database changes.
+
+The populate.py file will add some test values to the database, currently just for the games table in order to display game information on the home page.

@@ -1,10 +1,10 @@
 {% extends 'base.html' %}
-{% load static %} 
+{% load static %}
 {%block content%}
 
 <head>
-    <title>Store</title>
-    <link rel="stylesheet" href="{% static 'styles/style.css' %}">
+  <title>Store</title>
+
 </head>
 <style>
     body {
@@ -23,27 +23,48 @@
 
 <body>
 
-    <h1>This is the home page</h1>
-    <p>Imagine some pictures of games here</p>
+  <h1>This is the home page</h1>
+  <p>Imagine some pictures of games here</p>
+  <div class="container">
+    <div class="row justify-content-center">
+    {% for game in games%}
 
-    <h1 style="font-size:24px; align-self:flex-start; width:fit-content; padding:12px;">Trending</h1>
-    <div id="carouselExampleDark" class="carousel carousel-dark slide">
-        <div class="carousel-inner">
-          <div class="carousel-item active" data-bs-interval="10000">
-            <img class="d-block w-100">
-            <div class="carousel-caption d-none d-md-block">
-            </div>
-          </div>
+    <div class="col mx-3 game">
+      <h3>{{game.name}}</h3>
+      <p>By: Publisher with id ={{game.publisher_id}}</p>
+      <p>Genre: {{game.genre}}</p>
+    </div>
+
+    {% endfor %}
+
+  </div>
+
+  </div>
+
+  <!-- Can't figure out how to add the games to the carousel: only one of them can be active. Might need css or javascript -->
+
+
+  <h1 style="font-size:24px; align-self:flex-start; width:fit-content; padding:12px;">Trending</h1>
+  <div id="carouselExampleDark" class="carousel carousel-dark slide">
+    <div class="carousel-inner">
+
+      <div class="carousel-item" data-bs-interval="10000">
+        <img class="d-block w-100">
+        <div class="carousel-caption d-none d-md-block">
+
         </div>
-        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="prev">
-          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-          <span class="visually-hidden">Previous</span>
-        </button>
-        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="next">
-          <span class="carousel-control-next-icon" aria-hidden="true"></span>
-          <span class="visually-hidden">Next</span>
-        </button>
       </div>
+    </div>
+
+    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Next</span>
+    </button>
+  </div>
 </body>
 
 {% endblock %}

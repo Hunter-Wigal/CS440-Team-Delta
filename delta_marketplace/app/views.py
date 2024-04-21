@@ -75,3 +75,6 @@ def search(request: HttpRequest, search_results=[]):
         
 
     return render(request, 'layouts/search.html', {'results': search_results})
+
+def inventory(request):
+    return render(request, "layouts/inventory.html")

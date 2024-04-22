@@ -9,3 +9,5 @@ urlpatterns = [
     path('inventory', views.inventory),
     path('search', views.search, name='search')
 ]
+
+handler404 = views.custom_404_view

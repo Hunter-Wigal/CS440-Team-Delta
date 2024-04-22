@@ -13,7 +13,6 @@ class Game:
     release_date: str
     genre: str
     publisher_id: int
-    
 
 def game_resp_to_list(resp: requests.Response):
     """Converts a response type from the games api to a list of game objects

@@ -22,62 +22,142 @@ def execute_query(query: str):
     
     return contents
 
-# Fetch games with a specific game query and return a list of dictionaries
-def fetch_games(query: str):
+
+# Fetch all user data
+def fetch_user(query: str):
 
     contents = execute_query(query)
 
-    games = []
+    user = []
+
+    for row in contents:
+        temp_dict = {}
+        temp_dict["dname"] = row[0]
+        temp_dict["full_name"] = row[1]
+        temp_dict["birth_date"] = row[2]
+        
+        user.append(temp_dict)
+
+    to_return = {}
+    to_return["user"] = user
+
+    return to_return
+
+# Fetch games owned
+def fetch_gamesOwned(query: str):
+
+    contents = execute_query(query)
+
+    gamesOwned = []
 
     for row in contents:
         temp_dict = {}
         temp_dict["id"] = row[0]
-        temp_dict["name"] = row[1]
-        temp_dict["esrb"] = row[2]
-        temp_dict["release_date"] = str(row[3])
-        temp_dict["genre"] = row[4]
-        temp_dict["publisher_id"] = row[5]
+        temp_dict["start"] = str(row[1])
+        temp_dict["end"] = str(row[2])
 
-        games.append(temp_dict)
+        gamesOwned.append(temp_dict)
 
     to_return = {}
-    to_return["games"] = games
+    to_return["gamesOwned"] = gamesOwned
     
     return to_return
 
+# Fetch the collectibles earned by a user
+def fetch_collectiblesOwned(query: str):
 
-# Create your views here.
-def get_all(request: HttpRequest):
+    contents = execute_query(query)
 
-    to_return = fetch_games("""SELECT * FROM Games;""")
+    collectibles = []
 
-    return JsonResponse(to_return)
+    for row in contents:
+        temp_dict = {}
+        temp_dict["id"] = row[0]
+        temp_dict["game_id"] = row[1]
 
+        collectibles.append(temp_dict)
 
-# Returns games that have a matched term in the passed GET parameter
-def get_games(request: HttpRequest):
+    to_return = {}
+    to_return["collectibles"] = collectibles
+    
+    return to_return
+
+# Adds a user to the database
+def add_user(request: HttpRequest):
+    return
+
+# Returns basic user data
+def get_user(request: HttpRequest):
     if request.method == "GET":
 
-        # Get the game passed to the request
-        game_name = request.GET.get("s").lower()
-        genre_choice = request.GET.get('g').lower()
-        
-        # Change the operator to select genres if the name isn't specified
-        operator = "OR" if game_name == 'none' or genre_choice == 'none' else 'AND'
+        # Get the Username passed to the request
+        user_name = request.GET.get("s")
 
-        # Get all games from database
-        query  = f"SELECT * FROM Games WHERE LOWER(title) LIKE '%{game_name}%' {operator} LOWER(genre) LIKE '%{genre_choice}%';"
-        
-        available_games = fetch_games(query)
-        
-        # Check if games were actually found before indexing the dictionary
-        if len(available_games) > 0:
-            available_games = available_games['games']
-        
+        # Get all user data
+        query = f"SELECT * FROM Users WHERE username = '%{user_name}%';"
 
+        # Call helper method
+        results = fetch_user(query)
+
+        # Check if the user actually has any data
+        if len(results) > 0:
+            results = results["user"]
+
+        # Place the results in a dictionary and return
         to_return = {}
-        to_return['games'] = available_games
-        
+        to_return["user"] = results
+
+        return JsonResponse(to_return)
+    
+    return HttpResponse("test")
+
+# Returns games owned by a user
+def get_owned_games(request: HttpRequest):
+    if request.method == "GET":
+
+        # Get the Username passed to the request
+        user_name = request.GET.get("s")
+
+        # Get all games for a user
+        query = f"SELECT * FROM GamesOwned WHERE username = '%{user_name}%';"
+
+        # Call helper method
+        results = fetch_gamesOwned(query)
+
+        # Check if the user actually has any games
+        if len(results) > 0:
+            results = results["gamesOwned"]
+
+        # Place the results in a dictionary and return
+        to_return = {}
+        to_return["gamesOwned"] = results
+
+        return JsonResponse(to_return)
+    
+    return HttpResponse("test")
+
+# Returns collectibles owned by a user
+def get_owned_coll(request: HttpRequest):
+    if request.method == "GET":
+
+        # Get the Username and Game ID passed to the request
+        user_name = request.GET.get("s")
+        game_id = request.GET.get("i")
+
+        # Get all collectibles that a user has accrued for a specific game
+        query = f"SELECT * FROM CollectiblesOwned WHERE username = '%{user_name}%' AND game_id = '{game_id}';"
+
+        # Call helper method
+        results = fetch_collectiblesOwned(query)
+
+        # Check whether or not the user has earned any collectibles
+        if len(results) > 0:
+            results = results["collectiblesOwned"]
+
+        # Place the results in a dictionary and return
+        to_return = {}
+        to_return["collectiblesOwned"] = results
+
         return JsonResponse(to_return)
     
     return HttpResponse("test")

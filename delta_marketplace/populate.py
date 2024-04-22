@@ -41,6 +41,7 @@ cursor.execute("""CREATE TABLE IF NOT EXISTS Users(
     password VARCHAR(64) NOT NULL
     )""")
 
+
 games_sql = "INSERT INTO Games (game_id, title, publisher_id, genre, esrb, release_date) VALUES(%s, %s, %s, %s, %s, %s)"
 publishers_sql = "INSERT INTO Publishers (publisher_id, publisher_name, location) VALUES(%s, %s, %s)"
 users_sql = "INSERT INTO Users VALUES (%s, %s, %s, %s, %s)"

@@ -19,4 +19,7 @@ def main():
 
 
 if __name__ == '__main__':
+    import create_db
+    import populate
+
     main()

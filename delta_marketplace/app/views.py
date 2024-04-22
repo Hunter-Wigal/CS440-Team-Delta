@@ -59,9 +59,6 @@ def search(request: HttpRequest, search_results=[]):
         
         if to_search == '':
             to_search = 'none'
-        
-        print(request.GET)
-        
             
         resp = requests.get('http://127.0.0.1:8000/api/games/get_games?s=%s&g=%s' % (to_search, genre))
         search_results = game_resp_to_list(resp)

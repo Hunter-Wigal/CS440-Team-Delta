@@ -4,7 +4,7 @@
 
 <head>
   <title>Store</title>
-  <link rel="stylesheet" href="{% static 'styles/style.css' %}?{% now 'U' %}">
+
 </head>
 <style>
     body {
@@ -26,10 +26,10 @@
   <h1>This is the home page</h1>
   <p>Imagine some pictures of games here</p>
   <div class="container">
-    <div class="row">
+    <div class="row justify-content-center">
     {% for game in games%}
 
-    <div class="col game">
+    <div class="col mx-3 game">
       <h3>{{game.name}}</h3>
       <p>By: Publisher with id ={{game.publisher_id}}</p>
       <p>Genre: {{game.genre}}</p>

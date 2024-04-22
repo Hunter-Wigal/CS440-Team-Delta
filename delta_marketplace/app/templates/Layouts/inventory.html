@@ -190,10 +190,18 @@
 }
 </style>
 <body>
-    <div class="slider">
+    <div class="slider" style="height:100px;">
         <div class="circular-slider circular-slider-demo">
           <div class="wrapper">
-            <div class="controls">
+            <div class="slides-holder">
+              <div class="slides-holder__item slides-holder__item_active"><img src="1.svg" alt="img"/></div>
+              <div class="slides-holder__item"><img src="2.png" alt="img"/></div>
+              <div class="slides-holder__item"><img src="3.png" alt="img"/></div>
+              <div class="slides-holder__item"><img src="4.png" alt="img"/></div>
+              <div class="slides-holder__item"><img src="5.png" alt="img"/></div>
+              <div class="slides-holder__item"><img src="6.png" alt="img"/></div>
+            </div>
+            <div class="controls" style="width:250px; height:50px">
               <div class="controls__left">
                 <div class="icon-wrapper"><i class="far fa-arrow-alt-circle-left"></i></div>
               </div>
@@ -207,14 +215,7 @@
                 </div>
               </div>
             </div>
-            <div class="slides-holder">
-              <div class="slides-holder__item slides-holder__item_active"><img src="1.svg" alt="img"/></div>
-              <div class="slides-holder__item"><img src="2.png" alt="img"/></div>
-              <div class="slides-holder__item"><img src="3.png" alt="img"/></div>
-              <div class="slides-holder__item"><img src="4.png" alt="img"/></div>
-              <div class="slides-holder__item"><img src="5.png" alt="img"/></div>
-              <div class="slides-holder__item"><img src="6.png" alt="img"/></div>
-            </div>
+            
             <div class="descriptions">
               <div class="descriptions__item descriptions__item_visible">
                 <h1>Slide 1</h1>

@@ -33,19 +33,24 @@
             width: 10%;
             padding: 20px;
             overflow-y: auto;
+            -ms-overflow-style: none; /* Hide scrollbar for IE and Edge */
+            scrollbar-width: none; /* Hide scrollbar for Firefox */
             position: absolute;
-            top: 0;
+            top: 8%;
             right: 0;
-            bottom: 0;
-            background-color: rgba(139, 38, 38, 0.8);
+            bottom: 10%;
             z-index: -1;
         }
 
+        .collectible-list::-webkit-scrollbar {
+            display: none; /* Hide scrollbar for Chrome, Safari, and Opera */
+        }
+
         .collectible-list-item {
-            margin-bottom: 20px; /* Adjust the spacing between collectible items */
-            border: 1px solid #ccc;
+            margin-bottom: 20px;
+            border: 1px;
             padding: 10px;
-            background-color: #fff;
+
         }
 
         .carousel {
@@ -85,6 +90,7 @@
           align-items: center;
           position: relative;
           z-index: 1;
+          user-select: none;
         }
         
         .carousel .control {
@@ -126,6 +132,7 @@
             const itemWidth = items[0].offsetWidth + parseInt(window.getComputedStyle(items[0]).marginRight);
 
             let currentIndex = 0;
+            const collectibleList = document.getElementById('collectible-list');
 
             function updateCarousel() {
                 itemsContainer.style.transform = `translateX(-${currentIndex * itemWidth}px)`;
@@ -167,7 +174,7 @@
                 const selectedCard = document.querySelector('.carousel .item.selected img');
                 if (selectedCard) {
                     // Add example collectible items based on the alt text of the selected card
-                    for (let i = 1; i <= 5; i++) {
+                    for (let i = 1; i <= 10; i++) {
                         const collectibleItem = document.createElement('div');
                         collectibleItem.classList.add('collectible-list-item');
                         collectibleItem.textContent = `${selectedCard.getAttribute('alt')} Collectible ${i}`;

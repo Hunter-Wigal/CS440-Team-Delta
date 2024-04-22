@@ -49,6 +49,9 @@ def listing(request):
 def account(request):
     return render(request, "layouts/account.html")
 
+def games(request):
+    return render(request, "layouts/games.html")
+
 
 def search(request: HttpRequest, search_results=[]):
     

@@ -27,6 +27,8 @@
   }
 
   .nav-link {
+    font-weight:bold;
+    user-select:none;
     color: #136F63;
   }
 
@@ -38,6 +40,7 @@
   .field {
     width:80%;
     border:solid rgb(75, 72, 72);
+    border-width:2px;
     background-color: #000F08;
     color:#136F63;
     padding:8px;
@@ -138,13 +141,13 @@
           </li>
 
           <li class="nav-item row">
-            <input class="field me-2 col" name="search-term" id="search-term" placeholder="Find a Game"
+            <input class="field col" autocomplete="off" name="search-term" style="width: 400px; border:none; user-select:none; padding-left:15px; border-top-left-radius: 20px; border-bottom-left-radius: 20px; margin-right:0px;" id="search-term" placeholder="Find a Game"
               aria-label="Search" style="min-width: 200px;">
-            <button class="btn btn-outline-success col" onclick="searchRedirect()">
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+            <button class="btn btn-primary col" style="width: 3px; background-color: #136F63; border-top-left-radius: 0px; border-bottom-left-radius: 0px; border-top-right-radius: 20px; border-bottom-right-radius: 20px;" onclick="searchRedirect()">
+              <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
                 <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
               </svg>
-          </button>
+            </button>
           </li>
         
           

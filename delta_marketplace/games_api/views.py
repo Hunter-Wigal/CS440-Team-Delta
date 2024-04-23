@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from django.http import HttpResponse, JsonResponse, HttpRequest
+from django.http import HttpResponse, HttpResponseNotAllowed, JsonResponse, HttpRequest
 from django.shortcuts import render
 import mysql.connector
 import json
@@ -80,4 +80,29 @@ def get_games(request: HttpRequest):
         
         return JsonResponse(to_return)
     
-    return HttpResponse("test")
+    return HttpResponseNotAllowed(['GET'])
+
+# very, very insecure. Should probably use session/localstorage or something else
+def get_user_games(request):
+    """Returns games that are owned by the user passed as a parameter
+
+    Args:
+        request (HttpRequest): Passed automagically by django
+
+    Returns:
+        JsonResponse: The games associated with a user as json
+    """    
+    if request.method == "GET":
+        user = request.GET.get('u')
+        # Get all games from database
+        query  = f"SELECT * FROM GamesOwned WHERE LOWER(username) LIKE '%{user}%';"
+        
+        available_games = fetch_games(query)
+        
+        to_return = {}
+        to_return['games'] = available_games
+        
+        return JsonResponse(to_return)
+    
+    return HttpResponseNotAllowed(['GET'])
+        

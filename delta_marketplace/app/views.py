@@ -57,7 +57,7 @@ def game_resp_to_list(resp: requests.Response):
         resp (requests.Response): Response to convert
 
     Returns:
-        games: A list of game objects
+        Game: A list of game objects
     """    
     resp_dict = resp.json()
    
@@ -186,6 +186,26 @@ def single_game_view(request: HttpRequest, pk):
     
     return render(request, "layouts/game.html", {"game": game, "publisher": publisher}) 
 
-def inventory(request: HttpRequest, user):
-    return render(request, "layouts/inventory.html")
+def inventory(request: HttpRequest):#, user):
+    # Temporary, need a way to distinguish logged in users
+    def get_curr_user():
+        return "bob"
+        
+    user = get_curr_user()
+
+    resp = requests.get(f'http://127.0.0.1:8000/api/games/get_user_games?u={user}')
+    
+    games = []
+    
+    # Check if games exist
+    if len(resp.json()['games']) > 1:
+        print(resp.json()['games'])
+        games = game_resp_to_list(resp)
+        
+        
+    else:
+        
+        games = ['none']
+    
+    return render(request, "layouts/inventory.html", {"games": games})
 

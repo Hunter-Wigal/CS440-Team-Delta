@@ -3,6 +3,8 @@ from typing import List
 from django.http import HttpRequest
 from django.shortcuts import redirect, render, HttpResponse
 import requests
+import mysql.connector
+import os
 
 
 @dataclass
@@ -75,6 +77,56 @@ def search(request: HttpRequest, search_results=[]):
         
 
     return render(request, 'layouts/search.html', {'results': search_results})
+
+def execute_single_game_query(query: str):
+    database = mysql.connector.connect(
+        host=os.environ.get("DATABASE_HOST"),
+        user=os.environ.get("USER"),
+        passwd=os.environ.get("PASSWORD"),
+        database="delta_marketplace",
+    )
+
+    # cursor
+    cursor = database.cursor()
+
+    
+
+def single_game_view(request: HttpRequest, pk):
+    database = mysql.connector.connect(
+        host=os.environ.get("DATABASE_HOST"),
+        user=os.environ.get("USER"),
+        passwd=os.environ.get("PASSWORD"),
+        database="delta_marketplace",
+    )
+    # Define the SQL query to retrieve the game with the specified primary key
+    game_query = "SELECT * FROM games WHERE game_id = %s"
+    publisher_query = "SELECT * FROM publishers WHERE publisher_id = %s"
+
+    # Execute the SQL query with the primary key as parameter
+    with database.cursor() as cursor:
+        cursor.execute(game_query, [pk])
+        result = cursor.fetchone()  
+     
+    game = {}  
+ 
+    game["id"] = result[0]
+    game["name"] = result[1]
+    game["esrb"] = result[2]
+    game["release_date"] = str(result[3])
+    game["genre"] = result[4]
+    game["publisher_id"] = result[5]
+    
+    with database.cursor() as cursor:
+        cursor.execute(publisher_query, [game["publisher_id"]])
+        result = cursor.fetchone()
+    
+    publisher = {}
+    publisher["id"] = result[0]
+    publisher["mod_id"] = result[1]
+    publisher["name"] = result[2]
+    publisher["location"] = result[3]
+    
+    return render(request, "layouts/game.html", {"game": game, "publisher": publisher}) 
 
 def inventory(request):
     return render(request, "layouts/inventory.html")

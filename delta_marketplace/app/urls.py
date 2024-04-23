@@ -7,7 +7,9 @@ urlpatterns = [
     path('listing', views.listing),
     path('account', views.account),
     path('inventory', views.inventory),
-    path('search', views.search, name='search')
+    path('games', views.games),
+    path('search', views.search, name='search'),
+    path('game/<str:pk>/', views.single_game_view, name="game")
 ]
 
 handler404 = views.custom_404_view

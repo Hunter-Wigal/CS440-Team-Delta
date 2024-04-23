@@ -22,10 +22,6 @@
     color: #F34213;
   }
 
-  .nav-link:focus {
-    color:#3E2F5B;
-  }
-
   .nav-link {
     font-weight:bold;
     user-select:none;
@@ -41,7 +37,7 @@
     width:80%;
     border:solid rgb(75, 72, 72);
     border-width:2px;
-    background-color: #000F08;
+    background-color:#333;
     color:#136F63;
     padding:8px;
   }
@@ -51,8 +47,17 @@
     border-color:#136F63;
     outline:none;
   }
-</style>
 
+  .footer {
+    background-color: #333;
+    margin-top:20px;
+    padding: 20px 0;
+    text-align: center;
+    position: static;
+    bottom: 0;
+    width: 100%;
+  }
+</style>
 
 <script>
   function searchRedirect() {
@@ -96,27 +101,17 @@
           <li class="links">
             <li class="nav-item">
               <a class="nav-link {% if currentURL == homeURL %} active {% endif %}" href="/">
-                {% if active %}
-                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" class="bi bi-play"
-                  viewBox="0 0 20 20">
-                  <path
-                    d="M10.804 8 5 4.633v6.734zm.792-.696a.802.802 0 0 1 0 1.392l-6.363 3.692C4.713 12.69 4 12.345 4 11.692V4.308c0-.653.713-.998 1.233-.696z" />
-                </svg>
-                {% else %}
                 <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" class="bi bi-play-fill" viewBox="0 0 20 20">
                   <path d="m11.596 8.697-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393"/>
                 </svg>
-                {% endif %}
                 Store
               </a>
             </li>
 
             <li class="nav-item">
               <a class="nav-link {% if user is not defined %} disabled {% endif %} {% if currentURL == accountURL %} active {% endif %}" href="account">
-                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" class="bi bi-play"
-                  viewBox="0 0 20 20">
-                  <path
-                    d="M10.804 8 5 4.633v6.734zm.792-.696a.802.802 0 0 1 0 1.392l-6.363 3.692C4.713 12.69 4 12.345 4 11.692V4.308c0-.653.713-.998 1.233-.696z" />
+                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" class="bi bi-play-fill" viewBox="0 0 20 20">
+                  <path d="m11.596 8.697-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393"/>
                 </svg>
                 My Account
               </a>
@@ -124,17 +119,9 @@
 
             <li class="nav-item">
               <a class="nav-link {% if user is not defined %} disabled {% endif %} {% if currentURL == inventoryURL %} active {% endif %}" href="inventory">
-                {% if active %}
                   <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" class="bi bi-play-fill" viewBox="0 0 20 20">
                     <path d="m11.596 8.697-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393"/>
                   </svg>
-                {% else %}
-                  <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" class="bi bi-play"
-                    viewBox="0 0 20 20">
-                    <path
-                      d="M10.804 8 5 4.633v6.734zm.792-.696a.802.802 0 0 1 0 1.392l-6.363 3.692C4.713 12.69 4 12.345 4 11.692V4.308c0-.653.713-.998 1.233-.696z" />
-                  </svg>
-                {% endif %}
                 Inventory
               </a>
             </li>
@@ -143,7 +130,7 @@
           <li class="nav-item row">
             <input class="field col" autocomplete="off" name="search-term" style="width: 400px; border:none; user-select:none; padding-left:15px; border-top-left-radius: 20px; border-bottom-left-radius: 20px; margin-right:0px;" id="search-term" placeholder="Find a Game"
               aria-label="Search" style="min-width: 200px;">
-            <button class="btn btn-primary col" style="width: 3px; background-color: #136F63; border-top-left-radius: 0px; border-bottom-left-radius: 0px; border-top-right-radius: 20px; border-bottom-right-radius: 20px;" onclick="searchRedirect()">
+            <button class="btn btn-primary col" style="border:none; width: 3px; background-color: #136F63; border-top-left-radius: 0px; border-bottom-left-radius: 0px; border-top-right-radius: 20px; border-bottom-right-radius: 20px;" onclick="searchRedirect()">
               <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
                 <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
               </svg>
@@ -153,7 +140,7 @@
           
           {% if user is not defined %}
             <button type="button" class="nav-link" style="border:0px; background:none;" data-bs-toggle="modal" data-bs-target="#loginModal">
-              <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="currentColor" class="bi bi-box-arrow-in-right" viewBox="0 0 16 16">
+              <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="currentColor" class="bi bi-box-arrow-in-right" viewBox="0 0 16 16">
                 <path fill-rule="evenodd" d="M6 3.5a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-2a.5.5 0 0 0-1 0v2A1.5 1.5 0 0 0 6.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-8A1.5 1.5 0 0 0 5 3.5v2a.5.5 0 0 0 1 0z"/>
                 <path fill-rule="evenodd" d="M11.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H1.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708z"/>
               </svg>
@@ -228,9 +215,14 @@
     </div>
   </div>
   {% block content %}
-
   {% endblock %}
 
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      ©Delta Marketplace 2024
+    </div>
+  </footer>
 </body>
 
 </html>

@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<head>
+    <title>Fun Game</title>
+</head>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+    }
+    .game-container {
+        height: 750px;
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #F34213;
+        border: 2px solid #000F08;
+        border-radius: 10px;
+    }
+    .title {
+        font-size: 24px;
+        font-weight: bold;
+        margin-top: 10px;
+    }
+    .description {
+        margin-top: 10px;
+    }
+    .rating {
+        margin-top: 10px;
+    }
+    .publisher {
+        margin-top: 10px;
+    }
+    .date{
+        margin-top: 10px;
+    }
+    .genres {
+        margin-top: 10px;
+    }
+</style>
+<body style="background-color: #136F63">
+    <div class="game-container"> 
+        <div class="text-center">
+            <img src="..." class="rounded" alt="game image">
+          </div>
+        <div class="title">Title: {{game.name}}</div>
+        <div class="description">Description: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</div>
+        <div class="rating">ESRB Rating: {{game.esrb}}</div>
+        <div class="publisher">Publisher: {{publisher.name}}</div>
+        <div class="date">Released on: {{game.release_date}}</div>
+        <div class="genres">Genres: {{game.genre}}</div>
+        <div class="buttons" style="margin-top: 20px;">
+            <button class="btn btn-primary" style="margin-right: 10px;">Buy</button>
+            <button class="btn btn-primary">Rent</button>
+        </div>
+    </div>
+</body>
+
+{% endblock %}

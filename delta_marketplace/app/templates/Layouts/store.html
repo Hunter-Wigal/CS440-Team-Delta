@@ -30,7 +30,7 @@
     {% for game in games%}
 
     <div class="col mx-3 game">
-      <h3>{{game.name}}</h3>
+      <a href="game/{{game.id}}"><h3>{{game.name}}</h3></a>
       <p>By: Publisher with id ={{game.publisher_id}}</p>
       <p>Genre: {{game.genre}}</p>
     </div>

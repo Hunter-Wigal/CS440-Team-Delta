@@ -24,7 +24,6 @@ def execute_query(query: str):
 
 # Fetch games with a specific game query and return a list of dictionaries
 def fetch_games(query: str):
-
     contents = execute_query(query)
 
     games = []
@@ -37,6 +36,7 @@ def fetch_games(query: str):
         temp_dict["release_date"] = str(row[3])
         temp_dict["genre"] = row[4]
         temp_dict["publisher_id"] = row[5]
+        temp_dict['image_url'] = row[6]
 
         games.append(temp_dict)
 
@@ -97,10 +97,28 @@ def get_user_games(request):
         # Get all games from database
         query  = f"SELECT * FROM GamesOwned WHERE LOWER(username) LIKE '%{user}%';"
         
-        available_games = fetch_games(query)
+        contents = execute_query(query)
+
+        games_owned = []
+
+        for row in contents:
+            temp_dict = {}
+            temp_dict["username"] = row[0]
+            temp_dict["game_id"] = row[1]
+            temp_dict["owned_start"] = row[2]
+            temp_dict["owned_end"] = str(row[3])
+
+            games_owned.append(temp_dict)
+        
+        
+        query  = "SELECT * FROM Games WHERE game_id={id};"
+        game_list = []
+        for game in games_owned:
+            game_list.append(fetch_games(query.format(id=game['game_id']))['games'][0])
         
         to_return = {}
-        to_return['games'] = available_games
+        to_return['games_owned'] = games_owned
+        to_return['games_list'] = game_list
         
         return JsonResponse(to_return)
     

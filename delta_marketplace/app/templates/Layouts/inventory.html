@@ -121,7 +121,7 @@
           <!--These are placeholder pngs, and will be replaced!-->
           {% for game in games %}
           <div class="item {% if forloop.first %}selected{% endif %}">
-              <img src="{{ item.image.url }}" alt="{{ item.title }}">
+              <img src="{% static game.image_url %}" alt="{{ game.title }}">
           </div>
           {% endfor %}
         </div>

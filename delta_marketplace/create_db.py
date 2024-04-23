@@ -1,11 +1,13 @@
 import mysql.connector
 import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 database = mysql.connector.connect(
     host=os.environ.get("DATABASE_HOST"),
     user=os.environ.get("USER"),
-    passwd=os.environ.get("PASSWORD"),
-    database="delta_marketplace",
+    passwd=os.environ.get("PASSWORD")
 )
 
 # cursor
@@ -41,17 +43,18 @@ cursor.execute("""CREATE TABLE IF NOT EXISTS Games(
     release_date DATE NOT NULL,
     genre VARCHAR(15),
     publisher_id INT NOT NULL,
+    image_url VARCHAR(30) DEFAULT '',
     FOREIGN KEY (publisher_id) REFERENCES Publishers(publisher_id)
 		ON UPDATE CASCADE
         ON DELETE RESTRICT
-        
 );""")
 
 cursor.execute("""CREATE TABLE IF NOT EXISTS Users(
 	username VARCHAR(30) PRIMARY KEY,
     display_name VARCHAR(30),
     full_name VARCHAR(50) NOT NULL,
-    birth_date DATE NOT NULL
+    birth_date DATE NOT NULL,
+    password VARCHAR(50) NOT NULL
 );""")
 
 cursor.execute("""CREATE TABLE IF NOT EXISTS Collectibles(

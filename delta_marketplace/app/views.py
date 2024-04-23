@@ -15,6 +15,7 @@ class Game:
     release_date: str
     genre: str
     publisher_id: int
+    image_url: str
 
 @dataclass
 class Publisher:
@@ -50,20 +51,21 @@ class CollectiblesOwned:
     id: int
     game_id: int
 
-def game_resp_to_list(resp: requests.Response):
+def game_resp_to_list(resp: requests.Response, games_key="games"):
     """Converts a response type from the games api to a list of game objects
 
     Args:
         resp (requests.Response): Response to convert
-
+        game_key (string): the key that the games are attributed to
     Returns:
         Game: A list of game objects
     """    
     resp_dict = resp.json()
    
     games: List[Game] = []
-    for item in resp_dict['games']:
-        temp_game = Game(int(item['id']), item['name'], item['esrb'], item['release_date'], item['genre'], int(item['publisher_id']))
+    for item in resp_dict[games_key]:
+        print(item)
+        temp_game = Game(int(item['id']), item['name'], item['esrb'], item['release_date'], item['genre'], int(item['publisher_id']), item['image_url'])
         
         games.append(temp_game)
         
@@ -197,15 +199,16 @@ def inventory(request: HttpRequest):#, user):
     
     games = []
     
+    # print(resp.json())
     # Check if games exist
-    if len(resp.json()['games']) > 1:
-        print(resp.json()['games'])
-        games = game_resp_to_list(resp)
-        
-        
+    if len(resp.json()['games_list']) > 0:
+        # print(resp.json()['games_owned'])
+        games = game_resp_to_list(resp, 'games_list')
+        # print(games)
     else:
-        
         games = ['none']
+        
+    # print(games)
     
     return render(request, "layouts/inventory.html", {"games": games})
 

@@ -13,33 +13,51 @@
     integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
     crossorigin="anonymous"></script>
 
-    <link rel="stylesheet" href="{% static 'styles/style.css' %}?{% now 'U' %}">
+    <link rel="stylesheet" href="{% static 'styles/style.css' %}">
 </head>
 
 <!-- Styling for Navbar -->
 <style>
   .nav-link:active {
-    color: black;
-    cursor: pointer;
+    color: #F34213;
   }
 
   .nav-link {
-    cursor: pointer;
+    font-weight:bold;
+    user-select:none;
+    color: #136F63;
   }
 
-  .nav-link {
-    color: hsl(0, 0%, 20%);
+  .nav-link:hover {
+    cursor:pointer;
+    color: #3E2F5B;
   }
+
+  .field {
+    width:80%;
+    border:solid rgb(75, 72, 72);
+    border-width:2px;
+    background-color:#333;
+    color:#136F63;
+    padding:8px;
+  }
+
+  .field:focus {
+    border: solid 2px;
+    border-color:#136F63;
+    outline:none;
+  }
+
   .footer {
-    background-color: #f8f9fa;
+    background-color: #333;
+    margin-top:20px;
     padding: 20px 0;
     text-align: center;
-    position: fixed;
+    position: static;
     bottom: 0;
     width: 100%;
   }
 </style>
-
 
 <script>
   function searchRedirect() {
@@ -50,14 +68,28 @@
     // Make url dynamic?
     window.location.replace(`http://127.0.0.1:8000/search?gamesearch=${searchValue}`);
   }
+
+  function login() {
+    let username = document.getElementById("username").value;
+    let password = document.getElementById("password").value;
+
+    window.location.replace(`http://127.0.0.1:8000/account?user=${username}`);
+  }
+
+  var currentURL = window.location.pathname;
+  var homeURL = '/';
+  var userURL = '/account';
+  var inventoryURL = '/inventory';
+  console.log(currentURL)
+
 </script>
 
 <body>
   <!-- Navigation Bar, eventually needs a search bar -->
-  <nav class="navbar bg-body-secondary navbar-expand-lg" style="margin-bottom:12px;">
+  <nav class="navbar navbar-expand-lg" style="margin-bottom:12px; background-color: #FFF08f;">
     <div class="container-fluid">
       <a href="/" class="navbar-brand"
-        style="border-color:black; border-width:10px; width:30px; height:30px; background-color:red;">
+        style="width:30px; height:30px; background-color:blue;">
         <img src="" style="height:10px; width:10px;">
       </a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
@@ -65,52 +97,56 @@
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0" style="margin: 12px; justify-content:space-evenly;">
-          <li class="nav-item">
-            <a class="nav-link active" href="/">
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-play"
-                viewBox="0 0 20 20">
-                <path
-                  d="M10.804 8 5 4.633v6.734zm.792-.696a.802.802 0 0 1 0 1.392l-6.363 3.692C4.713 12.69 4 12.345 4 11.692V4.308c0-.653.713-.998 1.233-.696z" />
-              </svg>
-              Store
-            </a>
+        <ul class="nav" style="margin: 3px; width:100%; align-items:center; justify-items:space-between">
+          <li class="links">
+            <li class="nav-item">
+              <a class="nav-link {% if currentURL == homeURL %} active {% endif %}" href="/">
+                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" class="bi bi-play-fill" viewBox="0 0 20 20">
+                  <path d="m11.596 8.697-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393"/>
+                </svg>
+                Store
+              </a>
+            </li>
+
+            <li class="nav-item">
+              <a class="nav-link {% if user is not defined %} disabled {% endif %} {% if currentURL == accountURL %} active {% endif %}" href="account">
+                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" class="bi bi-play-fill" viewBox="0 0 20 20">
+                  <path d="m11.596 8.697-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393"/>
+                </svg>
+                My Account
+              </a>
+            </li>
+
+            <li class="nav-item">
+              <a class="nav-link {% if user is not defined %} disabled {% endif %} {% if currentURL == inventoryURL %} active {% endif %}" href="inventory">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" class="bi bi-play-fill" viewBox="0 0 20 20">
+                    <path d="m11.596 8.697-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393"/>
+                  </svg>
+                Inventory
+              </a>
+            </li>
           </li>
 
-          <li class="nav-item">
-            <a class="nav-link" href="account">
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-play"
-                viewBox="0 0 20 20">
-                <path
-                  d="M10.804 8 5 4.633v6.734zm.792-.696a.802.802 0 0 1 0 1.392l-6.363 3.692C4.713 12.69 4 12.345 4 11.692V4.308c0-.653.713-.998 1.233-.696z" />
-              </svg>
-              My Account
-            </a>
-          </li>
-
-          <li class="nav-item">
-            <a class="nav-link" href="inventory">
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-play"
-                viewBox="0 0 20 20">
-                <path
-                  d="M10.804 8 5 4.633v6.734zm.792-.696a.802.802 0 0 1 0 1.392l-6.363 3.692C4.713 12.69 4 12.345 4 11.692V4.308c0-.653.713-.998 1.233-.696z" />
-              </svg>
-              Inventory
-            </a>
-          </li>
-
-          <li class="row ms-4">
-            <input class="form-control me-2 col" name="search-term" id="search-term" placeholder="Find a Game"
+          <li class="nav-item row">
+            <input class="field col" autocomplete="off" name="search-term" style="width: 400px; border:none; user-select:none; padding-left:15px; border-top-left-radius: 20px; border-bottom-left-radius: 20px; margin-right:0px;" id="search-term" placeholder="Find a Game"
               aria-label="Search" style="min-width: 200px;">
-            <button class="btn btn-outline-success col" onclick="searchRedirect()">Search</button>
+            <button class="btn btn-primary col" style="border:none; width: 3px; background-color: #136F63; border-top-left-radius: 0px; border-bottom-left-radius: 0px; border-top-right-radius: 20px; border-bottom-right-radius: 20px;" onclick="searchRedirect()">
+              <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+              </svg>
+            </button>
           </li>
+        
+          
+          {% if user is not defined %}
+            <button type="button" class="nav-link" style="border:0px; background:none;" data-bs-toggle="modal" data-bs-target="#loginModal">
+              <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="currentColor" class="bi bi-box-arrow-in-right" viewBox="0 0 16 16">
+                <path fill-rule="evenodd" d="M6 3.5a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-2a.5.5 0 0 0-1 0v2A1.5 1.5 0 0 0 6.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-8A1.5 1.5 0 0 0 5 3.5v2a.5.5 0 0 0 1 0z"/>
+                <path fill-rule="evenodd" d="M11.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H1.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708z"/>
+              </svg>
+            </button>
+          {% endif %}
         </ul>
-
-
-        <button type="button" class="btn btn-primary d-flex" data-bs-toggle="modal" data-bs-target="#loginModal">
-          Login/Signup
-        </button>
-
       </div>
     </div>
   </nav>
@@ -118,54 +154,76 @@
   <!-- Login Modal -->
   <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModal" aria-hidden="true">
     <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h1 class="modal-title fs-5" id="exampleModalLabel">Login</h1>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      <div class="modal-content" style="background-color: #000F08;">
+        <div class="modal-header" style="justify-content: space-between;">
+          <h1 class="modal-title fs-5" id="loginModalLabel" >Login</h1>
+          <button class="nav-link" data-bs-dismiss="modal" aria-label="Close">
+            <svg xmlns="http://www.w3.org/2000/svg" width="34" height="34" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16">
+              <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708"/>
+            </svg>
+          </button>
         </div>
         <div class="modal-body">
-          ...
+          <form id="login">
+            <div class="mb-1" style="padding-left: 10%; text-align:left;">Email Address</div>
+            <input class="field" autocomplete="off" type="text" placeholder="Ex. johnseed21@mail.com">
+            <div class="mt-3 mb-1" style="padding-left: 10%; text-align:left;">Password</div> 
+            <input class="field" autocomplete="off" type="password">
+            <a type="button" class="btn nav-link mt-3" style="text-align:center;" onclick="login()">Login</a>
+          </form>
         </div>
-        <div class="modal-footer">
-          Don't have an account? Make one
-          <a class="nav-link" data-bs-toggle="modal" data-bs-target="#signupModal">here</a>.
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary">Save changes</button>
+        <div class="modal-footer" style="justify-content:center;">
+          Don't have an account? Make one <a class="nav-link" style="padding-left:2px;" data-bs-toggle="modal" data-bs-target="#signupModal">here</a>
         </div>
       </div>
     </div>
   </div>
 
   <!-- Signup Modal -->
-  <div class="modal fade" id="signupModal" tabindex="-1" aria-labelledby="signupModalLabel" aria-hidden="true">
+  <div class="modal fade" id="signupModal" tabindex="-1" aria-labelledby="signupModal" aria-hidden="true">
     <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h1 class="modal-title fs-5" id="exampleModalLabel">Signup</h1>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      <div class="modal-content" style="background-color: #000F08;">
+        <div class="modal-header" style="justify-content: space-between;">
+          <h1 class="modal-title fs-5" id="signupModal" >Signup</h1>
+          <button class="nav-link" data-bs-dismiss="modal" aria-label="Close">
+            <svg xmlns="http://www.w3.org/2000/svg" width="34" height="34" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16">
+              <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708"/>
+            </svg>
+          </button>
         </div>
         <div class="modal-body">
-          ...
+          <form id="login" autocomplete="off">
+            <div class="mb-1" style="padding-left: 10%; text-align:left;">Email Address</div>
+            <input class="field" type="text" placeholder="Ex. johnseed21@mail.com">
+            <div class="mt-3 mb-1" style="padding-left: 10%; text-align:left;">Username <i style="padding-left:4px; font-size:small; color:#136F63">CANNOT BE CHANGED LATER</i></div>
+            <input class="field" maxlength="30" type="text" placeholder="Ex. ModernSquirrel98">
+            <div class="mt-3 mb-1" style="padding-left: 10%; text-align:left;">First Name</div>
+            <input class="field" maxlength="25" type="text">
+            <div class="mt-3 mb-1" style="padding-left: 10%; text-align:left;">Last Name</div>
+            <input class="field" maxlength="25" type="text">
+            <div class="mt-3 mb-1" style="padding-left: 10%; text-align:left;">Password</div>
+            <input class="field" type="password">
+            <div class="mt-3 mb-1" style="padding-left: 10%; text-align:left;">Confirm Password</div> 
+            <input class="field" type="password">
+            <a type="button" class="btn nav-link mt-3" style="text-align:center;" onclick="signup()">Signup</a>
+          </form>
         </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary">Save changes</button>
+        <div class="modal-footer" style="justify-content:center;">
+          Already have an account? Log-in <a class="nav-link" style="padding-left:2px;" data-bs-toggle="modal" data-bs-target="#loginModal">here</a>
         </div>
       </div>
     </div>
   </div>
 
+  {% block content %}
+  {% endblock %}
+
   <!-- Footer -->
   <footer class="footer">
     <div class="container">
-      <span class="text-muted">© Delta Marketplace 2024</span>
+      ©Delta Marketplace 2024
     </div>
   </footer>
-
-  {% block content %}
-
-  {% endblock %}
-
 </body>
 
 </html>

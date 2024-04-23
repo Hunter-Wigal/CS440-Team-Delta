@@ -15,7 +15,40 @@ class Game:
     release_date: str
     genre: str
     publisher_id: int
-    
+
+@dataclass
+class Publisher:
+    id: int
+    mod_id: int
+    name: str
+    location: str
+
+@dataclass
+class User:
+    username: str
+    display_name: str
+    full_name: str
+    birth_date: str
+
+@dataclass
+class Collectibles:
+    id: int
+    game_id: int
+    image: str
+    name: str
+
+@dataclass
+class GamesOwned:
+    username: str
+    game_id: int
+    start: str
+    end: str
+
+@dataclass
+class CollectiblesOwned:
+    username: str
+    id: int
+    game_id: int
 
 def game_resp_to_list(resp: requests.Response):
     """Converts a response type from the games api to a list of game objects
@@ -45,12 +78,33 @@ def store(request):
     # print(games)
     return render(request, "layouts/store.html", {"games": games})
 
-def listing(request):
+def listing(request: HttpRequest):
     return render(request, "layouts/listing.html")
 
-def account(request):
+def account(request: HttpRequest):
     return render(request, "layouts/account.html")
 
+def games(request: HttpRequest):
+    return render(request, "layouts/games.html")
+
+def addUser(request: HttpRequest, userinfo = []):
+
+    # Check for post request and parameters in the request
+    if(request.method == 'POST' and len(request.POST) > 0):
+        username = request.POST.get('username', 'none')
+        display_name = request.POST.get('display_name', 'none')
+        full_name = request.POST.get('full_name', 'none')
+        birth_date = request.POST.get('birth_date', 'none')
+
+        if username == 'none' or display_name == 'none' or full_name == 'none' or birth_date == 'none':
+            userinfo = None
+        else:
+            userinfo = [username, display_name, full_name, birth_date]
+            print(userinfo)
+            # POST request to the API
+            resp = requests.post
+
+    return render(request, "layouts/addUser.html")
 
 def search(request: HttpRequest, search_results=[]):
     
@@ -128,5 +182,5 @@ def single_game_view(request: HttpRequest, pk):
     
     return render(request, "layouts/game.html", {"game": game, "publisher": publisher}) 
 
-def inventory(request):
+def inventory(request: HttpRequest, user):
     return render(request, "layouts/inventory.html")

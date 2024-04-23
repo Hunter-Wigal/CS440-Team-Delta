@@ -7,8 +7,24 @@
     <title>Account</title>
     <link rel="stylesheet" href="{% static 'styles/style.css' %}">
 </head>
+
+{% if user is not defined %}
+    <script>
+        function redirect(){
+            console.log("User is not logged in, redirecting to home")
+
+            window.location.replace('http://127.0.0.1:8000')
+        }
+        </script>
+    <body onload="redirect()"></body>
+{% else %}
+    <body>
+        Welcome {{user.displayName}}
+        <img class="profPic"></img>
+    </body>
+{% endif %}
     
-<img class="profPic"></img>
+
 
 
 {% endblock %}

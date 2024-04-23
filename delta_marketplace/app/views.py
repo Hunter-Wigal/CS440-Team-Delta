@@ -132,6 +132,10 @@ def search(request: HttpRequest, search_results=[]):
 
     return render(request, 'layouts/search.html', {'results': search_results})
 
+
+def custom_404_view(request, exception):
+    return render(request, '404.html', status=404)
+  
 def execute_single_game_query(query: str):
     database = mysql.connector.connect(
         host=os.environ.get("DATABASE_HOST"),
@@ -184,3 +188,4 @@ def single_game_view(request: HttpRequest, pk):
 
 def inventory(request: HttpRequest, user):
     return render(request, "layouts/inventory.html")
+

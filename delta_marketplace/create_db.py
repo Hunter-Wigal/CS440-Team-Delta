@@ -1,9 +1,11 @@
 import mysql.connector
+import os
 
 database = mysql.connector.connect(
-    host='localhost',
-    user='root',
-    passwd='password'
+    host=os.environ.get("DATABASE_HOST"),
+    user=os.environ.get("USER"),
+    passwd=os.environ.get("PASSWORD"),
+    database="delta_marketplace",
 )
 
 # cursor

@@ -13,6 +13,7 @@ Before running the sever, setup the database using the information provided in t
 
 ## To Run the Server
 *  Navigate into the delta_marketplace directory, where manage.py is located
+*  Run 'python manage.py collectstatic' and type yes when prompted
 *  Run 'python manage.py runserver'
 
 ## Things to note

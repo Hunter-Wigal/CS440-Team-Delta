@@ -4,6 +4,7 @@ from django.http import HttpRequest
 from django.shortcuts import redirect, render, HttpResponse
 import requests
 import mysql.connector
+import json
 import os
 
 
@@ -138,19 +139,7 @@ def search(request: HttpRequest, search_results=[]):
 def custom_404_view(request, exception):
     return render(request, '404.html', status=404)
   
-def execute_single_game_query(query: str):
-    database = mysql.connector.connect(
-        host=os.environ.get("DATABASE_HOST"),
-        user=os.environ.get("USER"),
-        passwd=os.environ.get("PASSWORD"),
-        database="delta_marketplace",
-    )
-
-    # cursor
-    cursor = database.cursor()
-
     
-
 def single_game_view(request: HttpRequest, pk):
     database = mysql.connector.connect(
         host=os.environ.get("DATABASE_HOST"),
@@ -186,7 +175,11 @@ def single_game_view(request: HttpRequest, pk):
     publisher["name"] = result[2]
     publisher["location"] = result[3]
     
-    return render(request, "layouts/game.html", {"game": game, "publisher": publisher}) 
+    return render(request, "layouts/game.html", {"game": game, "publisher": publisher})
+
+def publisher_dashboard(request: HttpRequest, pk):
+    
+    return render(request, "layouts/publisher_dashboard.html") 
 
 def inventory(request: HttpRequest):#, user):
     # Temporary, need a way to distinguish logged in users

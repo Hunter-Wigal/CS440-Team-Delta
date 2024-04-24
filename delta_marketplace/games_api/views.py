@@ -124,3 +124,32 @@ def get_user_games(request):
     
     return HttpResponseNotAllowed(['GET'])
         
+# Handles actions for one game
+def single_game(request: HttpRequest):
+    # Return a single game
+    if request.method == "GET":
+        
+        # Set pk to the passed game id
+        pk = request.GET.get('g')
+        # Define the SQL query to retrieve the game with the specified primary key
+        game_query = "SELECT * FROM games WHERE game_id = {id}".format(id=pk)
+        
+        game = fetch_games(game_query)['games']
+        
+        to_return = {}
+        to_return['game'] = game
+        
+        return JsonResponse(to_return)
+
+    
+    # Add a game
+    if request.method == "POST":
+        pass
+    
+    # Update a game
+    if request.method == "PUT":
+        pass
+    
+    # Delete a game
+    if request.method == "DELETE":
+        pass

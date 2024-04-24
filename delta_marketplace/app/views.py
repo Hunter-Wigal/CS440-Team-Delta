@@ -143,39 +143,18 @@ def custom_404_view(request, exception):
   
     
 def single_game_view(request: HttpRequest, pk):
-    database = mysql.connector.connect(
-        host=os.environ.get("DATABASE_HOST"),
-        user=os.environ.get("USER"),
-        passwd=os.environ.get("PASSWORD"),
-        database="delta_marketplace",
-    )
-    # Define the SQL query to retrieve the game with the specified primary key
-    game_query = "SELECT * FROM games WHERE game_id = %s"
-    publisher_query = "SELECT * FROM publishers WHERE publisher_id = %s"
+    # Request the game with the passed id
+    game_resp = requests.get("http://127.0.0.1:8000/api/games/game?g=%s" %(pk))
+    game = game_resp_to_list(game_resp, games_key="game")[0]
+    
+    # Get the publisher id of the game
+    pub_id = game.publisher_id
+    # Get the publisher information associated with the id
+    publisher_resp = requests.get("http://127.0.0.1:8000/api/publishers/publisher?p=%s" % (pub_id)).json()['publisher']
+    
+    # Convert the json into a publisher object
+    publisher = Publisher(publisher_resp['id'], publisher_resp['mod_id'], publisher_resp['name'], publisher_resp['location'])
 
-    # Execute the SQL query with the primary key as parameter
-    with database.cursor() as cursor:
-        cursor.execute(game_query, [pk])
-        result = cursor.fetchone()  
-     
-    game = {}  
- 
-    game["id"] = result[0]
-    game["name"] = result[1]
-    game["esrb"] = result[2]
-    game["release_date"] = str(result[3])
-    game["genre"] = result[4]
-    game["publisher_id"] = result[5]
-    
-    with database.cursor() as cursor:
-        cursor.execute(publisher_query, [game["publisher_id"]])
-        result = cursor.fetchone()
-    
-    publisher = {}
-    publisher["id"] = result[0]
-    publisher["mod_id"] = result[1]
-    publisher["name"] = result[2]
-    publisher["location"] = result[3]
     
     return render(request, "layouts/game.html", {"game": game, "publisher": publisher})
 

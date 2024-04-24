@@ -10,7 +10,7 @@ urlpatterns = [
     path('games', views.games),
     path('search', views.search, name='search'),
     path('game/<str:pk>/', views.single_game_view, name="game"),
-    path('publisher/<str:pk>/', views.publisher_dashboard, name="pubisher_dashboard")
+    path('publisher/<str:pk>/', views.publisher_dashboard, name="publisher_dashboard")
 ]
 
 handler404 = views.custom_404_view

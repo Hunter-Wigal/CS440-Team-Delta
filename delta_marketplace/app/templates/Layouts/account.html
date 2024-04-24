@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% load static %} 
+{% load static %}
 
 {%block content%}
 
@@ -7,23 +7,87 @@
     <title>Account</title>
     <link rel="stylesheet" href="{% static 'styles/style.css' %}">
 </head>
+<style>
+    .container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+        min-height: 60%;
+    }
 
-{% if user is not defined %}
-    <script>
-        function redirect(){
-            console.log("User is not logged in, redirecting to home")
+    .profile {
+        flex: 1;
+        padding: 20px;
+    }
 
-            window.location.replace('http://127.0.0.1:8000')
-        }
-        </script>
-    <body onload="redirect()"></body>
+    .profile img {
+        width: 100%;
+        max-width: 300px;
+        display: block;
+        margin: 0 auto;
+    }
+
+    .bio {
+        flex: 1;
+        padding: 20px;
+        border-radius: 10px;
+        background-color: #f0f0f0;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .details {
+        flex: 1;
+        padding: 20px;
+        border-radius: 10px;
+        background-color: #f0f0f0;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+</style>
+
+{% if user is none and not DEBUG %}
+<script>
+    function redirect() {
+        console.log("User is not logged in, redirecting to home")
+
+        window.location.replace('http://127.0.0.1:8000')
+    }
+</script>
+
+<body onload="redirect()"></body>
 {% else %}
-    <body>
-        Welcome {{user.displayName}}
-        <img class="profPic"></img>
-    </body>
+
+<body>
+    Welcome {{user.displayName}}
+    <!-- Main Content -->
+    <div class="container">
+        <!-- Profile Picture and Username -->
+        <div class="profile">
+            <img src="profile-picture.jpg" alt="Profile Picture">
+            <h3>USERNAME</h3>
+        </div>
+        <!-- Bio -->
+        <div class="bio">
+            <h3>BIO</h3>
+        </div>
+    </div>
+
+    <!-- Details -->
+    <div class="details">
+        <h3>Details</h3>
+        <div>
+            <p>USERNAME</p>
+            <p>EMAIL</p>
+            <p>PASSWORD</p>
+        </div>
+    </div>
+
+</body>
 {% endif %}
-    
+
 
 
 

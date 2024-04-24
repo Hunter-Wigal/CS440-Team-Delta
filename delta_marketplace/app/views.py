@@ -7,7 +7,6 @@ import mysql.connector
 import json
 import os
 
-
 @dataclass
 class Game:
     id: int
@@ -85,7 +84,10 @@ def listing(request: HttpRequest):
     return render(request, "layouts/listing.html")
 
 def account(request: HttpRequest):
-    return render(request, "layouts/account.html")
+    DEBUG = bool(os.environ.get('DEBUG'))
+    
+    user = None
+    return render(request, "layouts/account.html", {'DEBUG': DEBUG, 'user': user})
 
 def games(request: HttpRequest):
     return render(request, "layouts/games.html")
@@ -205,3 +207,6 @@ def inventory(request: HttpRequest):#, user):
     
     return render(request, "layouts/inventory.html", {"games": games})
 
+
+def users(request):
+    return render(request, 'layouts/users.html')

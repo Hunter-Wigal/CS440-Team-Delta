@@ -6,5 +6,7 @@ urlpatterns = [
     path('get_all', views.get_all),
     path('get_games', views.get_games),
     path('get_user_games', views.get_user_games),
-    path('game', views.single_game)
+    path('game', views.single_game),
+    path('collectibles', views.collectibles),
+    path('collectibles_owned', views.collectibles_owned)
 ]

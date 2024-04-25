@@ -12,11 +12,9 @@
         }
 
         .content-container{
-            position: absolute;
-            top: 50px;
-            bottom: 0;
-            left: 0;
-            right: 0;
+            position: relative;
+            top: 30px;
+            height: 100vh;
             overflow: hidden;
             background-image: url('sample1.png');
             background-repeat: no-repeat;
@@ -62,7 +60,11 @@
             margin-bottom: 20px;
             border: 1px;
             padding: 10px;
-
+            color: white;
+            font-size: 30px;
+            border: 3px solid black;
+            border-radius: 15px;
+            background-color: rgba(155, 155, 155, 0.5);
         }
 
         .carousel {
@@ -121,7 +123,7 @@
     <div class="collectible-list" id="collectible-list">
       <!-- Collectible items dynamically added here -->
       {% for collectible in collectibles %}
-      <div class="collectible-list-item">{{ collectible.collectible_name }}</div>
+      <div class="collectible-list-item">{{ collectible.name }}</div>
       {% endfor %}
     </div>
     <div class="carousel">
@@ -184,20 +186,20 @@
                     background.style.backgroundImage = `url('${selectedCard.getAttribute('src')}')`;
                 }
             }
-            
-            function updateCollectibleList() {
-                collectibleList.innerHTML = '';
-                const selectedCard = document.querySelector('.carousel .item.selected img');
-                if (selectedCard) {
-                    // Add example collectible items based on the alt text of the selected card
-                    for (let i = 1; i <= 10; i++) {
-                        const collectibleItem = document.createElement('div');
-                        collectibleItem.classList.add('collectible-list-item');
-                        collectibleItem.textContent = `${selectedCard.getAttribute('alt')} Collectible ${i}`;
-                        collectibleList.appendChild(collectibleItem);
-                    }
-                }
-            }
+            //
+            //function updateCollectibleList() {
+            //    collectibleList.innerHTML = '';
+            //    const selectedCard = document.querySelector('.carousel .item.selected img');
+            //    if (selectedCard) {
+            //        // Add example collectible items based on the alt text of the selected card
+            //        for (let i = 1; i <= 10; i++) {
+            //            const collectibleItem = document.createElement('div');
+            //            collectibleItem.classList.add('collectible-list-item');
+            //            //collectibleItem.textContent = `${selectedCard.getAttribute('alt')} Collectible ${i}`;
+            //            collectibleList.appendChild(collectibleItem);
+            //        }
+            //    }
+            //}
 
             prevBtn.addEventListener('click', function() {
                 currentIndex = Math.max(currentIndex - 1, 0);

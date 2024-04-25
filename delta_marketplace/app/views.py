@@ -35,12 +35,12 @@ class User:
     email: str
 
 @dataclass
-class Collectibles:
+class Collectible:
     id: int
     game_id: int
-    image: str
+    image_url: str
     name: str
-
+    
 @dataclass
 class GamesOwned:
     username: str
@@ -236,7 +236,20 @@ def inventory(request: HttpRequest):#, user):
         
     # print(games)
     
-    return render(request, "layouts/inventory.html", {"games": games})
+    collectibles = []
+    
+    resp = requests.get(f'http://127.0.0.1:8000/api/games/collectibles_owned?u={user}').json()
+    print(resp)
+    
+    for collectible_owned in resp['collectibles']:
+        collectible_id = collectible_owned['collectible_id']
+        collectible_found = requests.get(f'http://127.0.0.1:8000/api/games/collectibles?s={collectible_id}').json()['collectible']
+        print(collectible_found)
+        collectible = Collectible(collectible_found['collectible_id'], collectible_found['game_id'], collectible_found['image_url'], collectible_found['collectible_name'].capitalize())
+        collectibles.append(collectible)
+        # print(collectibles)
+        
+    return render(request, "layouts/inventory.html", {"games": games, "collectibles": collectibles})
 
 
 # def users(request):

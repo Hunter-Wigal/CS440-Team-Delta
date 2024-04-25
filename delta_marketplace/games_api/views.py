@@ -199,3 +199,44 @@ def single_game(request: HttpRequest):
     # Delete a game
     if request.method == "DELETE":
         pass
+    
+    
+def collectibles(request):
+    if request.method == "GET":
+        collectible_list = []
+        id = request.GET['s']
+        collectible_sql = "SELECT * FROM Collectibles WHERE collectible_id = {id}".format(id=id)
+        
+        contents = execute_query(collectible_sql)[0]
+        
+        if len(contents) > 0:
+            temp_dict = {}
+            temp_dict["collectible_id"] = contents[0]
+            temp_dict["game_id"] = contents[1]
+            temp_dict["image_url"] = contents[2]
+            temp_dict["collectible_name"] = str(contents[3])
+            collectible_list.append(temp_dict)
+            
+        to_return = {'collectible': collectible_list[0]}
+        
+        return JsonResponse(to_return)
+        
+def collectibles_owned(request):
+    if request.method == "GET":
+        collectibles = []
+        username = request.GET['u']
+        collectible_sql = "SELECT * FROM CollectiblesOwned WHERE username = '{user}'".format(user=username)
+        
+        contents = execute_query(collectible_sql)
+
+        for row in contents:
+            temp_dict = {}
+            temp_dict["username"] = row[0]
+            temp_dict["collectible_id"] = row[1]
+            temp_dict["game_id"] = row[2]
+
+            collectibles.append(temp_dict)
+            
+        to_return = {}
+        to_return['collectibles'] = collectibles
+        return JsonResponse(to_return)

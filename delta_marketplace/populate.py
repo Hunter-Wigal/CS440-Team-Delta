@@ -52,8 +52,8 @@ publishers.append((27376, "user", 'Actifishion', 'Charleston, WV'))
 publishers.append((3096, "bob", 'Nubisof', 'Wilmington, NC'))
 
 users = []
-users.append(("user", "real person", 'Real Person', datetime.date(1, 1, 1), "temp-password"))
-users.append(("bob", "real person", 'Real Person', datetime.date(1, 1, 1), "temp-password"))
+users.append(("user", "real person", 'Real Person', "user@email.com", "temp-password"))
+users.append(("bob", "real person", 'Real Person', "user@email.com", "password"))
 
 games_owned = []
 games_owned.append(('bob', 384560, datetime.date(1, 1, 1), datetime.date(1, 1, 1)))

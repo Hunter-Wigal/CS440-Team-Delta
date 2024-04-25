@@ -19,7 +19,8 @@ def execute_query(query: str):
 
     cursor.execute(query)
 
-    database.commit()
+    if "INSERT" in query:
+        database.commit()
     
     contents = cursor.fetchall()
     
@@ -90,8 +91,7 @@ def fetch_collectiblesOwned(query: str):
 # Adds a user to the database
 @csrf_exempt
 def user(request: HttpRequest):
-    print(request.POST)
-    
+    # Signing up
     if request.method == "POST":
         add_user_sql = "INSERT INTO Users (username, display_name, full_name, email, password) VALUES (%s, %s, %s, %s, %s)"
         
@@ -101,10 +101,35 @@ def user(request: HttpRequest):
         password = "'{}'".format(request.POST['password'])
         # display_name = username
 
-        contents = execute_query(add_user_sql % (username, username, email, full_name, password))
+        query = add_user_sql % (username, username, full_name, email, password)
+        contents = execute_query()
         print(contents)
         
-    return HttpResponse(200)
+        return HttpResponse(200)
+    
+    # Logging in
+    if request.method == "GET":
+        email = "'{}'".format(request.GET['email'])
+        password = "'{}'".format(request.GET['password'])
+        
+        login_query = "SELECT * FROM Users WHERE email = %s AND password = %s" % (email, password)
+        print(login_query)
+        
+        contents = execute_query(login_query)
+
+        success = len(contents) > 0
+        
+        if success:
+            response = HttpResponse()
+            response.status_code = 200
+            response.content = contents[0][0]
+            return response
+        
+        else:
+            response = HttpResponse()
+            response.status_code = 401
+            response.content = "failed"
+            return response
 
 # Returns basic user data
 def get_user(request: HttpRequest):

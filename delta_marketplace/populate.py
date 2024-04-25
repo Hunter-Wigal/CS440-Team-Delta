@@ -31,24 +31,6 @@ database = mysql.connector.connect(
 # cursor
 cursor = database.cursor()
 
-cursor.execute("""CREATE TABLE IF NOT EXISTS Publishers(
-    publisher_id INT PRIMARY KEY,
-    username VARCHAR(50) UNIQUE,
-    publisher_name VARCHAR(30) UNIQUE NOT NULL,
-    location VARCHAR(30) NOT NULL,
-    FOREIGN KEY(username) REFERENCES Users(username) ON DELETE RESTRICT
-    )""")
-
-cursor.execute("""CREATE TABLE IF NOT EXISTS Games(
-    game_id INT PRIMARY KEY AUTO_INCREMENT,
-    title VARCHAR(50) NOT NULL,
-    esrb VARCHAR(10) DEFAULT 'PENDING',
-    release_date DATE NOT NULL,
-    genre VARCHAR(15),
-    publisher_id INT,
-    FOREIGN KEY(publisher_id) REFERENCES Publishers(publisher_id) ON DELETE RESTRICT
-    )""")
-
 games_sql = "INSERT INTO Games (game_id, title, publisher_id, genre, esrb, release_date, image_url, description) VALUES(%s, %s, %s, %s, %s, %s, %s, %s)"
 publishers_sql = "INSERT INTO Publishers (publisher_id, publisher_name, location) VALUES(%s, %s, %s)"
 users_sql = "INSERT INTO Users(username, display_name, full_name, email, password) VALUES (%s, %s, %s, %s, %s)"

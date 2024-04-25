@@ -32,9 +32,11 @@ def fetch_user(query: str):
 
     for row in contents:
         temp_dict = {}
-        temp_dict["dname"] = row[0]
-        temp_dict["full_name"] = row[1]
-        temp_dict["birth_date"] = row[2]
+        temp_dict["username"] = row[0]
+        temp_dict["dname"] = row[1]
+        temp_dict["full_name"] = row[2]
+        temp_dict["email"] = row[3]
+        temp_dict["password"] = row[4]
         
         user.append(temp_dict)
 

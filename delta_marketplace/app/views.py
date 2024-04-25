@@ -2,6 +2,8 @@ from dataclasses import dataclass
 from typing import List
 from django.http import HttpRequest
 from django.shortcuts import redirect, render, HttpResponse
+from django.views.generic.edit import FormView
+from django import forms
 import requests
 import mysql.connector
 import json
@@ -72,6 +74,38 @@ def game_resp_to_list(resp: requests.Response, games_key="games"):
         games.append(temp_game)
         
     return games
+
+class SignupForm(forms.Form):
+    username = forms.CharField(label='Username', max_length=30)
+    display_name = forms.CharField(label='Display Name', max_length=30)
+    full_name = forms.CharField(label='Full Name', max_length=50)
+    email = forms.EmailField(label='Email', max_length=50)
+    password = forms.CharField(label='Password', max_length=50, widget=forms.PasswordInput)
+
+def create_account(request: HttpRequest):
+    if request.method == 'POST':
+        form = SignupForm(request.POST)
+        if form.is_valid():
+            username = form.cleaned_data['username']
+            display_name = form.cleaned_data['dname']
+            full_name = form.cleaned_data['full_name']
+            email = form.cleaned_data['email']
+            passwd = form.cleaned_data['password']
+
+            user = User(username, display_name, full_name, email, passwd)
+
+            # Send the user to the users api
+            resp = requests.post('', {'form': form})
+         
+    else:
+        form = SignupForm()
+        return render(request, 'base.html', {'form': form})
+    
+class LoginForm(forms.Form):
+    username = forms.CharField(label='Username', max_length=30)
+    password = forms.CharField(label='Password', max_length=50, widget=forms.PasswordInput)
+
+    
     
 # Create your views here.
 def store(request):

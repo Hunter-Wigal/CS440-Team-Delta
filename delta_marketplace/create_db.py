@@ -55,7 +55,7 @@ cursor.execute("""CREATE TABLE IF NOT EXISTS Users(
 	username VARCHAR(30) PRIMARY KEY,
     display_name VARCHAR(30),
     full_name VARCHAR(50) NOT NULL,
-    birth_date DATE NOT NULL,
+    email VARCHAR(50) NOT NULL,
     password VARCHAR(50) NOT NULL
 );""")
 

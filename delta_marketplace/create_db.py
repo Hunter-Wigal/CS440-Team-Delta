@@ -1,9 +1,13 @@
 import mysql.connector
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 database = mysql.connector.connect(
-    host='localhost',
-    user='root',
-    passwd='password'
+    host=os.environ.get("DATABASE_HOST"),
+    user=os.environ.get("USER"),
+    passwd=os.environ.get("PASSWORD")
 )
 
 # cursor
@@ -32,17 +36,21 @@ cursor.execute("""CREATE TABLE IF NOT EXISTS Publishers(
 );""")
 
 
+# esrb VARCHAR(10) DEFAULT 'PENDING',
+
+# Changed esrb to be an int to work with the procedure for updating ratings
 cursor.execute("""CREATE TABLE IF NOT EXISTS Games(
 	game_id INT PRIMARY KEY,
     title VARCHAR(50) NOT NULL,
-    esrb VARCHAR(10) DEFAULT 'PENDING',
+    esrb INT,
     release_date DATE NOT NULL,
     genre VARCHAR(15),
     publisher_id INT NOT NULL,
+    image_url VARCHAR(30) DEFAULT '',
+    description TEXT NOT NULL,
     FOREIGN KEY (publisher_id) REFERENCES Publishers(publisher_id)
 		ON UPDATE CASCADE
         ON DELETE RESTRICT
-        
 );""")
 
 cursor.execute("""CREATE TABLE IF NOT EXISTS Users(

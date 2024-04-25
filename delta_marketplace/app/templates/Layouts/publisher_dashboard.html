@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+{% load static %}
+{%block content%}
+
+<header>
+    <title>Publisher Dashboard</title>
+</header>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+    }
+    .game-container {
+        height: 750px;
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #F34213;
+        border: 2px solid #000F08;
+        border-radius: 10px;
+    }
+    .title {
+        font-size: 24px;
+        font-weight: bold;
+        margin-top: 10px;
+    }
+    .description {
+        margin-top: 10px;
+    }
+    .location {
+        margin-top: 10px;
+    }
+    .publisher {
+        margin-top: 10px;
+    }
+    .date{
+        margin-top: 10px;
+    }
+    .genres {
+        margin-top: 10px;
+    }
+</style>
+
+<body style="background-color: #136F63">
+    <div class="row">
+        <div class="col-lg-6"> Publisher Info
+            <div class="text-center">
+                <img src="..." class="rounded" alt="company image">
+            </div>
+            <div class="publisher"> Actifishon </div>
+            <div class="location"> Charleston, WV </div>
+            <div class="description">Description: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</div>
+        </div>
+        <div class="col-lg-6">
+            Games
+            <div class="container" style="background-color: blue;">
+                <div class="card-custom">
+                    <img src="..." alt="An image" class="card-image">
+                    <div class="card-body-custom">
+                        <h4 class="game-name">fun game</h4>
+                        <div class="game-content">
+                            <p><b>Genre:</b> action</p>
+                            <p><b>Rating:</b> E</p>
+     
+                        </div>
+                        <button class="btn btn-success me-0">Edit</button>
+                        <button class="btn btn-info">Remove</button>
+                    </div>
+                </div>
+                <button class="btn btn-primary" onclick="window.location.href='{% url 'add_game' %}'">Add new game</button>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+{% endblock %}

@@ -6,8 +6,8 @@ from django.views.generic.edit import FormView
 from django import forms
 import requests
 import mysql.connector
+import json
 import os
-
 
 @dataclass
 class Game:
@@ -17,6 +17,8 @@ class Game:
     release_date: str
     genre: str
     publisher_id: int
+    image_url: str
+    description: str
 
 @dataclass
 class Publisher:
@@ -52,20 +54,22 @@ class CollectiblesOwned:
     id: int
     game_id: int
 
-def game_resp_to_list(resp: requests.Response):
+def game_resp_to_list(resp: requests.Response, games_key="games"):
     """Converts a response type from the games api to a list of game objects
 
     Args:
         resp (requests.Response): Response to convert
-
+        game_key (string): the key that the games are attributed to
     Returns:
-        games: A list of game objects
+        Game: A list of game objects
     """    
     resp_dict = resp.json()
+    print(resp_dict)
    
     games: List[Game] = []
-    for item in resp_dict['games']:
-        temp_game = Game(int(item['id']), item['name'], item['esrb'], item['release_date'], item['genre'], int(item['publisher_id']))
+    for item in resp_dict[games_key]:
+        print(item)
+        temp_game = Game(int(item['id']), item['name'], item['esrb'], item['release_date'], item['genre'], int(item['publisher_id']), item['image_url'], item['description'])
         
         games.append(temp_game)
         
@@ -116,7 +120,10 @@ def listing(request: HttpRequest):
     return render(request, "layouts/listing.html")
 
 def account(request: HttpRequest):
-    return render(request, "layouts/account.html")
+    DEBUG = bool(os.environ.get('DEBUG'))
+    
+    user = None
+    return render(request, "layouts/account.html", {'DEBUG': DEBUG, 'user': user})
 
 def games(request: HttpRequest):
     return render(request, "layouts/games.html")
@@ -166,55 +173,57 @@ def search(request: HttpRequest, search_results=[]):
 
     return render(request, 'layouts/search.html', {'results': search_results})
 
-def execute_single_game_query(query: str):
-    database = mysql.connector.connect(
-        host=os.environ.get("DATABASE_HOST"),
-        user=os.environ.get("USER"),
-        passwd=os.environ.get("PASSWORD"),
-        database="delta_marketplace",
-    )
 
-    # cursor
-    cursor = database.cursor()
-
+def custom_404_view(request, exception):
+    return render(request, '404.html', status=404)
+  
     
-
 def single_game_view(request: HttpRequest, pk):
-    database = mysql.connector.connect(
-        host=os.environ.get("DATABASE_HOST"),
-        user=os.environ.get("USER"),
-        passwd=os.environ.get("PASSWORD"),
-        database="delta_marketplace",
-    )
-    # Define the SQL query to retrieve the game with the specified primary key
-    game_query = "SELECT * FROM games WHERE game_id = %s"
-    publisher_query = "SELECT * FROM publishers WHERE publisher_id = %s"
+    # Request the game with the passed id
+    game_resp = requests.get("http://127.0.0.1:8000/api/games/game?g=%s" %(pk))
+    game = game_resp_to_list(game_resp, games_key="game")[0]
+    
+    # Get the publisher id of the game
+    pub_id = game.publisher_id
+    # Get the publisher information associated with the id
+    publisher_resp = requests.get("http://127.0.0.1:8000/api/publishers/publisher?p=%s" % (pub_id)).json()['publisher']
+    
+    # Convert the json into a publisher object
+    publisher = Publisher(publisher_resp['id'], publisher_resp['mod_id'], publisher_resp['name'], publisher_resp['location'])
 
-    # Execute the SQL query with the primary key as parameter
-    with database.cursor() as cursor:
-        cursor.execute(game_query, [pk])
-        result = cursor.fetchone()  
-     
-    game = {}  
- 
-    game["id"] = result[0]
-    game["name"] = result[1]
-    game["esrb"] = result[2]
-    game["release_date"] = str(result[3])
-    game["genre"] = result[4]
-    game["publisher_id"] = result[5]
     
-    with database.cursor() as cursor:
-        cursor.execute(publisher_query, [game["publisher_id"]])
-        result = cursor.fetchone()
-    
-    publisher = {}
-    publisher["id"] = result[0]
-    publisher["mod_id"] = result[1]
-    publisher["name"] = result[2]
-    publisher["location"] = result[3]
-    
-    return render(request, "layouts/game.html", {"game": game, "publisher": publisher}) 
+    return render(request, "layouts/game.html", {"game": game, "publisher": publisher})
 
-def inventory(request: HttpRequest, user):
-    return render(request, "layouts/inventory.html")
+def publisher_dashboard(request: HttpRequest, pk):
+    return render(request, "layouts/publisher_dashboard.html") 
+
+def add_game_view(request: HttpRequest):
+    return render(request, "layouts/add_game.html")
+
+def inventory(request: HttpRequest):#, user):
+    # Temporary, need a way to distinguish logged in users
+    def get_curr_user():
+        return "bob"
+        
+    user = get_curr_user()
+
+    resp = requests.get(f'http://127.0.0.1:8000/api/games/get_user_games?u={user}')
+    
+    games = []
+    
+    # print(resp.json())
+    # Check if games exist
+    if len(resp.json()['games_list']) > 0:
+        # print(resp.json()['games_owned'])
+        games = game_resp_to_list(resp, 'games_list')
+        # print(games)
+    else:
+        games = ['none']
+        
+    # print(games)
+    
+    return render(request, "layouts/inventory.html", {"games": games})
+
+
+def users(request):
+    return render(request, 'layouts/users.html')

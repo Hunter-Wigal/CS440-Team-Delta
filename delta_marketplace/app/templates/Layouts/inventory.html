@@ -7,8 +7,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inventory</title>
     <style>
+        html, body {
+            height: 100%;
+        }
+
         .content-container{
-          background-image: url('sample1.png');
+            position: absolute;
+            top: 50px;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            overflow: hidden;
+            background-image: url('sample1.png');
+            background-repeat: no-repeat;
+            background-size: cover;
         }
 
         .title-container {
@@ -39,7 +51,7 @@
             top: 8%;
             right: 0;
             bottom: 10%;
-            z-index: -1;
+            z-index: 0;
         }
 
         .collectible-list::-webkit-scrollbar {
@@ -56,7 +68,7 @@
         .carousel {
             width: 100%;
             overflow: hidden;
-            position: fixed;
+            position: absolute;
             bottom: 0;
             left: 0;
             background-color: #f0f0f0;
@@ -119,9 +131,9 @@
         </div>
         <div class="items">
           <!--These are placeholder pngs, and will be replaced!-->
-          {% for item in items %}
+          {% for game in games %}
           <div class="item {% if forloop.first %}selected{% endif %}">
-              <img src="{{ item.image.url }}" alt="{{ item.title }}">
+              <img src="{% static game.image_url %}" alt="{{ game.title }}">
           </div>
           {% endfor %}
         </div>

@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% load static %}
+{%block content%}
+<header>
+    <title>Edit game</title>
+</header>
+<style>
+    .game-container {
+        height: 750px;
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #F34213;
+        border: 2px solid #000F08;
+        border-radius: 10px;
+    }
+</style>
+
+<body style="background-color: #136F63">
+    <div class="game-container">
+        <h2 class="title">Add New Game</h2>
+        <form method="post" action="">
+            {% csrf_token %}
+            <div>
+                <label for="name">Name of Game:</label><br>
+                <input type="text" id="name" name="name" required>
+            </div>
+            <div>
+                <label for="genre">Genre:</label><br>
+                <input type="text" id="genre" name="genre" required>
+            </div>
+            <div>
+                <label for="date">Release Date:</label><br>
+                <input type="date" id="date" name="date" required>
+            </div>
+            <div>
+                <label for="esrb">Rating:</label><br>
+                <input type="text" id="esrb" name="esrb" required>
+            </div>
+            <div>
+                <label for="image">Image:</label><br>
+                <input type="file" id="image" name="image"><br>
+            </div>
+            <div>
+                <label for="description">Description:</label><br>
+                <textarea id="description" name="description" required></textarea>
+            </div>
+            <button class="btn btn-primary my-2" type="submit">Add Game</button>
+        </form>
+    </div>
+</body>
+
+
+{% endblock %}

@@ -80,7 +80,6 @@ users.append(("bob", "real person", 'Real Person', datetime.date(1, 1, 1), "temp
 
 games_owned = []
 games_owned.append(('bob', 384560, datetime.date(1, 1, 1), datetime.date(1, 1, 1)))
-games_owned.append(('bob', 541513, datetime.date(1, 1, 1), datetime.date(1, 1, 1)))
 
 for publisher in publishers:
     try:

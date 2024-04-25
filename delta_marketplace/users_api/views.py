@@ -4,6 +4,7 @@ from django.shortcuts import render
 import mysql.connector
 import json
 import os
+from django.views.decorators.csrf import csrf_exempt
 
 def execute_query(query: str):
     database = mysql.connector.connect(
@@ -83,8 +84,10 @@ def fetch_collectiblesOwned(query: str):
     return to_return
 
 # Adds a user to the database
-def add_user(request: HttpRequest):
-    return
+@csrf_exempt
+def user(request: HttpRequest):
+    print(request.POST['user'])
+    return HttpResponse(200)
 
 # Returns basic user data
 def get_user(request: HttpRequest):
@@ -157,7 +160,7 @@ def get_owned_coll(request: HttpRequest):
         # Place the results in a dictionary and return
         to_return = {}
         to_return["collectiblesOwned"] = results
-
+        response = JsonResponse(to_return)
         return JsonResponse(to_return)
     
     return HttpResponse("test")

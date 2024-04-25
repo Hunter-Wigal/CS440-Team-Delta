@@ -3,13 +3,10 @@ import datetime
 from mysql.connector.errors import IntegrityError
 import os
 
-os.system("python delta_marketplace\\create_db.py run")
-
 database = mysql.connector.connect(
     host='localhost',
     user='root',
     passwd='password',
-    database='delta_marketplace'
 )
 
 # cursor
@@ -19,6 +16,10 @@ cursor = database.cursor()
 print("Dropping database...")
 cursor.execute("""DROP DATABASE IF EXISTS delta_marketplace;""")
 
+
+os.system("python delta_marketplace\\create_db.py run")
+
+cursor.execute("USE delta_marketplace;")
 
 print("\nInstalling requirements, please wait...\n")
 os.system("\npip install -r requirements.txt\n")

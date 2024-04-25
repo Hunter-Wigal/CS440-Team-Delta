@@ -37,6 +37,21 @@ def execute_query(query: str):
     
     return contents
 
+# Add a user to the database
+def add_user(query: str):
+
+    database = mysql.connector.connect(
+        host=os.environ.get("DATABASE_HOST"),
+        user=os.environ.get("USER"),
+        passwd=os.environ.get("PASSWORD"),
+        database="delta_marketplace",
+    )
+
+
+
+
+    return
+
 # Fetch games with a specific game query and return a list of dictionaries
 def fetch_games(query: str):
     contents = execute_query(query)

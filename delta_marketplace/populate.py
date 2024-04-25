@@ -49,20 +49,9 @@ cursor.execute("""CREATE TABLE IF NOT EXISTS Games(
     FOREIGN KEY(publisher_id) REFERENCES Publishers(publisher_id) ON DELETE RESTRICT
     )""")
 
-
-# Password being stored assumed to be a SHA-256 hash
-cursor.execute("""CREATE TABLE IF NOT EXISTS Users(
-    username VARCHAR(30) PRIMARY KEY,
-    display_name VARCHAR(30),
-    full_name VARCHAR(60) NOT NULL,
-    birth_date DATE NOT NULL,
-    password VARCHAR(64) NOT NULL
-    )""")
-
-
 games_sql = "INSERT INTO Games (game_id, title, publisher_id, genre, esrb, release_date, image_url, description) VALUES(%s, %s, %s, %s, %s, %s, %s, %s)"
 publishers_sql = "INSERT INTO Publishers (publisher_id, publisher_name, location) VALUES(%s, %s, %s)"
-users_sql = "INSERT INTO Users(username, display_name, full_name, birth_date, password) VALUES (%s, %s, %s, %s, %s)"
+users_sql = "INSERT INTO Users(username, display_name, full_name, email, password) VALUES (%s, %s, %s, %s, %s)"
 games_owned_sql = "INSERT INTO GamesOwned(username, game_id, owned_start, owned_end) VALUES (%s, %s, %s, %s)"
 collectibles_squl = "INSERT INTO Collectibles(collectible_id, game_id, image_url, collectible_name) VALUES (%s, %s, %s, %s)"
 collectibles_owned_sql = "INSERT INTO CollectiblesOwned(username, collectible_id, game_id) VALUES (%s, %s, %s)"

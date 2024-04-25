@@ -215,11 +215,10 @@ def add_game_view(request: HttpRequest):
     return render(request, "layouts/add_game.html")
 
 def inventory(request: HttpRequest):#, user):
-    # Temporary, need a way to distinguish logged in users
-    def get_curr_user():
-        return "bob"
+    # Temporary, need a way to distinguish logged in user
+
+    user = request.COOKIES['username']
         
-    user = get_curr_user()
 
     resp = requests.get(f'http://127.0.0.1:8000/api/games/get_user_games?u={user}')
     

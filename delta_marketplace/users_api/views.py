@@ -19,6 +19,8 @@ def execute_query(query: str):
 
     cursor.execute(query)
 
+    database.commit()
+    
     contents = cursor.fetchall()
     
     return contents
@@ -88,7 +90,20 @@ def fetch_collectiblesOwned(query: str):
 # Adds a user to the database
 @csrf_exempt
 def user(request: HttpRequest):
-    print(request.POST['user'])
+    print(request.POST)
+    
+    if request.method == "POST":
+        add_user_sql = "INSERT INTO Users (username, display_name, full_name, email, password) VALUES (%s, %s, %s, %s, %s)"
+        
+        username = "'{}'".format(request.POST['username'])
+        email = "'{}'".format(request.POST['email'])
+        full_name = "'{}'".format(request.POST['name'])
+        password = "'{}'".format(request.POST['password'])
+        # display_name = username
+
+        contents = execute_query(add_user_sql % (username, username, email, full_name, password))
+        print(contents)
+        
     return HttpResponse(200)
 
 # Returns basic user data

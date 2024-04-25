@@ -139,7 +139,7 @@ def get_user(request: HttpRequest):
         user_name = request.GET.get("s")
 
         # Get all user data
-        query = f"SELECT * FROM Users WHERE username = '%{user_name}%';"
+        query = f"SELECT * FROM Users WHERE username = '{user_name}';"
 
         # Call helper method
         results = fetch_user(query)

@@ -61,13 +61,13 @@
 {% else %}
 
 <body>
-    Welcome {{user.displayName}}
+    Welcome {{user.display_name}}
     <!-- Main Content -->
     <div class="container">
         <!-- Profile Picture and Username -->
         <div class="profile">
             <img src="profile-picture.jpg" alt="Profile Picture">
-            <h3>USERNAME</h3>
+            <h3>{{user.username}}</h3>
         </div>
         <!-- Bio -->
         <div class="bio">
@@ -79,9 +79,8 @@
     <div class="details">
         <h3>Details</h3>
         <div>
-            <p>USERNAME</p>
-            <p>EMAIL</p>
-            <p>PASSWORD</p>
+            <p>{{user.username}}</p>
+            <p>{{user.email}}</p>
         </div>
     </div>
 

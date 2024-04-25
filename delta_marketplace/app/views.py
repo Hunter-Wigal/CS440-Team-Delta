@@ -32,7 +32,7 @@ class User:
     username: str
     display_name: str
     full_name: str
-    birth_date: str
+    email: str
 
 @dataclass
 class Collectibles:
@@ -120,9 +120,23 @@ def listing(request: HttpRequest):
     return render(request, "layouts/listing.html")
 
 def account(request: HttpRequest):
-    DEBUG = bool(os.environ.get('DEBUG'))
+    DEBUG = True # bool(os.environ.get('DEBUG'))
+    username = request.COOKIES['username']
+    print(username)
+    resp = requests.get('http://127.0.0.1:8000/api/users/get_user?s={username}'.format(username=username))
+    
+    print(resp)
     
     user = None
+    if len(resp.json()['user']) < 1:
+        # TODO reformat this
+        user = None
+    # Assume the user was found
+    else:
+        json = resp.json()['user'][0]
+        user = User(json['username'],json['dname'],json['full_name'],json['email'] )
+        print(user)
+    
     return render(request, "layouts/account.html", {'DEBUG': DEBUG, 'user': user})
 
 def games(request: HttpRequest):
@@ -143,7 +157,7 @@ def addUser(request: HttpRequest, userinfo = []):
             userinfo = [username, display_name, full_name, birth_date]
             print(userinfo)
             # POST request to the API
-            resp = requests.post
+            # resp = requests.post
 
     return render(request, "layouts/addUser.html")
 
@@ -225,5 +239,5 @@ def inventory(request: HttpRequest):#, user):
     return render(request, "layouts/inventory.html", {"games": games})
 
 
-def users(request):
-    return render(request, 'layouts/users.html')
+# def users(request):
+#     return render(request, 'layouts/users.html')

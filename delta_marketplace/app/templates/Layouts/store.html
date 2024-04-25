@@ -91,12 +91,14 @@
         <h2>Games Recommended For You!</h2><br>
         <div id="carouselExampleDark" class="carousel carousel-dark slide" style="width:60%;" data-bs-ride="carousel">
             <div class="carousel-inner">
-                {% for game in games %}
                 <div class="carousel-item active">
-                    <img src="{% static 'imgs/{{game.image_url}}' %}" alt="...">
+                    <img src="{% static 'imgs/sample2.png' %}" alt="...">
                     <p class="carousel-caption d-none d-md-block"></p>
                 </div>
-                {% endfor %}
+                <div class="carousel-item active">
+                    <img src="{% static 'imgs/sample3.png' %}" alt="...">
+                    <p class="carousel-caption d-none d-md-block"></p>
+                </div>
             </div>
             <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="prev">
                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -121,10 +123,9 @@
             <div class="col-md-5">
                 <a class="nav-link" style="font-size:48px; text-align: left;" href="game/{{game.id}}">{{game.name}}</a>
                 <div class="game-info">
-                    <p>ESRB Rating: {{game.esrb}}</p>
+                    <p>ESRB Rating: {{game.esrb}} Genre: {{game.genre}}</p>
                     <div class="game-info-buttons">
-                        <button class="btn btn-primary">Genre: {{game.genre}}</button>
-                        <button class="btn btn-success">Buy Game</button>
+                        <a class="btn btn-success" href="game/{{game.id}}">Buy Game</a>
                     </div>
                 </div>
             </div>

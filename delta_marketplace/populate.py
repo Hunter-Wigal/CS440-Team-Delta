@@ -6,6 +6,21 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
+def num_to_esrb(num):
+    ratings = ['E', 'E10+', 'T', 'M', 'A', 'RP']
+    if num > len(ratings):
+        num = len(ratings) - 1
+        
+    return ratings[num]
+
+def esrb_to_num(esrb):
+    ratings = ['E', 'E10+', 'T', 'M', 'A', 'RP']
+    
+    if not esrb in ratings:
+        return ratings.index('RP')
+    
+    return ratings.index(esrb)
+
 database = mysql.connector.connect(
     host=os.environ.get("DATABASE_HOST"),
     user=os.environ.get("USER"),
@@ -51,9 +66,9 @@ games_owned_sql = "INSERT INTO GamesOwned(username, game_id, owned_start, owned_
 
 games = []
 # games.append((0, "A game", datetime.date(2020, 5, 5)))
-games.append((384560, 'Fun Game', 3096, 'Action', 'E', datetime.date(2020,2,1), 'imgs/img.png'))
-games.append((541513, 'COD: Fish at War ', 27376, 'FPS', 'M', datetime.date(2012,11,24), 'imgs/sample2.png'))
-games.append((985061, 'Fun Game 2', 3096, 'Adventure', 'T', datetime.date(2023,4,15), 'imgs/sample3.png'))
+games.append((384560, 'Fun Game', 3096, 'Action', esrb_to_num('E'), datetime.date(2020,2,1), 'imgs/img.png'))
+games.append((541513, 'COD: Fish at War ', 27376, 'FPS', esrb_to_num('M'), datetime.date(2012,11,24), 'imgs/sample2.png'))
+games.append((985061, 'Fun Game 2', 3096, 'Adventure', esrb_to_num('T'), datetime.date(2023,4,15), 'imgs/sample3.png'))
 
 publishers = []
 publishers.append((27376, 'Actifishion', 'Charleston, WV'))
@@ -99,6 +114,29 @@ for game in games_owned:
     except IntegrityError as e:
         # Ignore, just just means duplicate entry
         pass
+
+
+procedure_sql = """
+CREATE PROCEDURE IF NOT EXISTS UpdateESRBByGenre (
+	IN p_game_id INT,
+    IN p_genre VARCHAR(15),
+    IN min_rating INT -- Assuming numeric values for ESRB ratings
+)
+BEGIN
+    -- Check if the genre is 'Horror'
+    IF LOWER(p_genre) = 'horror' THEN
+        -- Update the ESRB rating to the maximum of the current rating and the minimum allowed rating
+        UPDATE Games
+        SET esrb = GREATEST(esrb, min_rating)
+        WHERE game_id = p_game_id;
+    -- ELSE
+        -- Logic for other ratings
+    END IF;
+END;
+
+"""
+
+cursor.execute(procedure_sql)
 
 
 

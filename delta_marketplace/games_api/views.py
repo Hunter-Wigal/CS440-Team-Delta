@@ -5,6 +5,21 @@ import mysql.connector
 import json
 import os
 
+def num_to_esrb(num):
+    ratings = ['E', 'E10+', 'T', 'M', 'A', 'RP']
+    if num > len(ratings):
+        num = len(ratings) - 1
+        
+    return ratings[num]
+
+def esrb_to_num(esrb):
+    ratings = ['E', 'E10+', 'T', 'M', 'A', 'RP']
+    
+    if not esrb in ratings:
+        return ratings.index('RP')
+    
+    return ratings.index(esrb)
+
 def execute_query(query: str):
     database = mysql.connector.connect(
         host=os.environ.get("DATABASE_HOST"),
@@ -32,7 +47,7 @@ def fetch_games(query: str):
         temp_dict = {}
         temp_dict["id"] = row[0]
         temp_dict["name"] = row[1]
-        temp_dict["esrb"] = row[2]
+        temp_dict["esrb"] = num_to_esrb(int(row[2]))
         temp_dict["release_date"] = str(row[3])
         temp_dict["genre"] = row[4]
         temp_dict["publisher_id"] = row[5]
@@ -144,11 +159,26 @@ def single_game(request: HttpRequest):
     
     # Add a game
     if request.method == "POST":
-        pass
+        # Update this with the actual game id
+        game_id = 0
+        
+        
+        min_rating = esrb_to_num('M')
+        # Call this when adding a game to ensure the rating is appropriate
+        procedure_sql = "CALL UpdateESRBByGenre(%s, 'Horror', 3);" % (game_id, min_rating)
+        execute_query(procedure_sql)
     
     # Update a game
     if request.method == "PUT":
-        pass
+        # Update this with the actual game id
+        game_id = 0
+        
+        
+        min_rating = esrb_to_num('M')
+        # Call this when updating a game to make sure the rating is correct
+        procedure_sql = "CALL UpdateESRBByGenre(%s, 'Horror', %s);" % (game_id, min_rating)
+        execute_query(procedure_sql)
+
     
     # Delete a game
     if request.method == "DELETE":

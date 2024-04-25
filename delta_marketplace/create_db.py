@@ -36,10 +36,13 @@ cursor.execute("""CREATE TABLE IF NOT EXISTS Publishers(
 );""")
 
 
+# esrb VARCHAR(10) DEFAULT 'PENDING',
+
+# Changed esrb to be an int to work with the procedure for updating ratings
 cursor.execute("""CREATE TABLE IF NOT EXISTS Games(
 	game_id INT PRIMARY KEY,
     title VARCHAR(50) NOT NULL,
-    esrb VARCHAR(10) DEFAULT 'PENDING',
+    esrb INT,
     release_date DATE NOT NULL,
     genre VARCHAR(15),
     publisher_id INT NOT NULL,

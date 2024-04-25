@@ -19,7 +19,6 @@ cursor = database.cursor()
 print("Dropping database...")
 cursor.execute("""DROP DATABASE IF EXISTS delta_marketplace;""")
 
-
 print("\nInstalling requirements, please wait...\n")
 os.system("\npip install -r requirements.txt\n")
 

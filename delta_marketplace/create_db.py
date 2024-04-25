@@ -21,16 +21,13 @@ cursor.execute("CREATE DATABASE IF NOT EXISTS delta_marketplace")
 
 cursor.execute("""USE delta_marketplace;""")               
                
-cursor.execute("""CREATE TABLE IF NOT EXISTS Moderators (
-    mod_id INT PRIMARY KEY
-);""")
-
+# Removed moderators table and mod_id replaced with username as foreign key.
 cursor.execute("""CREATE TABLE IF NOT EXISTS Publishers(
 	publisher_id INT PRIMARY KEY,
-    mod_id INT,
+    username VARCHAR(30),
     publisher_name VARCHAR(30) UNIQUE NOT NULL,
     location VARCHAR(30),
-    FOREIGN KEY (mod_id) REFERENCES Moderators(mod_id)
+    FOREIGN KEY (username) REFERENCES Users(username)
 		ON UPDATE CASCADE
 		ON DELETE RESTRICT
 );""")
@@ -39,8 +36,9 @@ cursor.execute("""CREATE TABLE IF NOT EXISTS Publishers(
 # esrb VARCHAR(10) DEFAULT 'PENDING',
 
 # Changed esrb to be an int to work with the procedure for updating ratings
+# Changed game_id to AUTO_INCREMENT
 cursor.execute("""CREATE TABLE IF NOT EXISTS Games(
-	game_id INT PRIMARY KEY,
+	game_id INT PRIMARY KEY AUTO_INCREMENT,
     title VARCHAR(50) NOT NULL,
     esrb INT,
     release_date DATE NOT NULL,

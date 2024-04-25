@@ -62,7 +62,7 @@ cursor.execute("""CREATE TABLE IF NOT EXISTS Users(
 cursor.execute("""CREATE TABLE IF NOT EXISTS Collectibles(
 	collectible_id INT PRIMARY KEY,
     game_id INT NOT NULL,
-    image BLOB,
+    image_url VARCHAR(30) DEFAULT '',
     collectible_name VARCHAR(30),
     UNIQUE(collectible_id, game_id),
     FOREIGN KEY (game_id) REFERENCES Games(game_id)

@@ -64,12 +64,17 @@ games_sql = "INSERT INTO Games (game_id, title, publisher_id, genre, esrb, relea
 publishers_sql = "INSERT INTO Publishers (publisher_id, publisher_name, location) VALUES(%s, %s, %s)"
 users_sql = "INSERT INTO Users(username, display_name, full_name, birth_date, password) VALUES (%s, %s, %s, %s, %s)"
 games_owned_sql = "INSERT INTO GamesOwned(username, game_id, owned_start, owned_end) VALUES (%s, %s, %s, %s)"
+collectibles_squl = "INSERT INTO Collectibles(collectible_id, game_id, image_url, collectible_name) VALUES (%s, %s, %s, %s)"
+collectibles_owned_sql = "INSERT INTO CollectiblesOwned(username, collectible_id, game_id) VALUES (%s, %s, %s)"
 
 games = []
 # games.append((0, "A game", datetime.date(2020, 5, 5)))
 games.append((384560, 'Fun Game', 3096, 'Action', esrb_to_num('E'), datetime.date(2020,2,1), 'imgs/img.png', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'))
 games.append((541513, 'COD: Fish at War ', 27376, 'FPS', esrb_to_num('M'), datetime.date(2012,11,24), 'imgs/sample2.png', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'))
 games.append((985061, 'Fun Game 2', 3096, 'Adventure', esrb_to_num('T'), datetime.date(2023,4,15), 'imgs/sample3.png', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'))
+
+collectibles = []
+collectibles.append((403266, 384560, 'imgs/item1.png', 'fun item'))
 
 publishers = []
 publishers.append((27376, "user", 'Actifishion', 'Charleston, WV'))
@@ -82,6 +87,27 @@ users.append(("bob", "real person", 'Real Person', datetime.date(1, 1, 1), "temp
 games_owned = []
 games_owned.append(('bob', 384560, datetime.date(1, 1, 1), datetime.date(1, 1, 1)))
 games_owned.append(('bob', 541513, datetime.date(1, 1, 1), datetime.date(1, 1, 1)))
+
+collectibles_owned = []
+collectibles_owned.append(('bob', 403266, 384560))
+
+for collectible in collectibles_owned:
+    try:
+        cursor.execute(collectibles_owned_sql, collectible)
+    
+    except IntegrityError as e:
+        # Ignore just just means duplicate entry
+        pass
+
+
+for collectible in collectibles:
+    try:
+        cursor.execute(collectibles_squl, collectible)
+    
+    except IntegrityError as e:
+        # Ignore just just means duplicate entry
+        pass
+
 
 for publisher in publishers:
     try:

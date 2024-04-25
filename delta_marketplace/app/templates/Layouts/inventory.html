@@ -121,7 +121,7 @@
     <div class="collectible-list" id="collectible-list">
       <!-- Collectible items dynamically added here -->
       {% for collectible in collectibles %}
-      <div class="collectible-list-item">{{ collectible.name }}</div>
+      <div class="collectible-list-item">{{ collectible.collectible_name }}</div>
       {% endfor %}
     </div>
     <div class="carousel">
@@ -130,7 +130,6 @@
             <div class="control next">&gt;</div>
         </div>
         <div class="items">
-          <!--These are placeholder pngs, and will be replaced!-->
           {% for game in games %}
           <div class="item {% if forloop.first %}selected{% endif %}">
               <img src="{% static game.image_url %}" alt="{{ game.title }}">

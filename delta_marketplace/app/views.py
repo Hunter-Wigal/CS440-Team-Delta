@@ -16,6 +16,7 @@ class Game:
     genre: str
     publisher_id: int
     image_url: str
+    description: str
 
 @dataclass
 class Publisher:
@@ -61,11 +62,12 @@ def game_resp_to_list(resp: requests.Response, games_key="games"):
         Game: A list of game objects
     """    
     resp_dict = resp.json()
+    print(resp_dict)
    
     games: List[Game] = []
     for item in resp_dict[games_key]:
         print(item)
-        temp_game = Game(int(item['id']), item['name'], item['esrb'], item['release_date'], item['genre'], int(item['publisher_id']), item['image_url'])
+        temp_game = Game(int(item['id']), item['name'], item['esrb'], item['release_date'], item['genre'], int(item['publisher_id']), item['image_url'], item['description'])
         
         games.append(temp_game)
         
@@ -159,8 +161,10 @@ def single_game_view(request: HttpRequest, pk):
     return render(request, "layouts/game.html", {"game": game, "publisher": publisher})
 
 def publisher_dashboard(request: HttpRequest, pk):
-    
     return render(request, "layouts/publisher_dashboard.html") 
+
+def add_game_view(request: HttpRequest):
+    return render(request, "layouts/add_game.html")
 
 def inventory(request: HttpRequest):#, user):
     # Temporary, need a way to distinguish logged in users

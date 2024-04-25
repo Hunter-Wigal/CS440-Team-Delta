@@ -52,6 +52,7 @@ def fetch_games(query: str):
         temp_dict["genre"] = row[4]
         temp_dict["publisher_id"] = row[5]
         temp_dict['image_url'] = row[6]
+        temp_dict['description'] = row[7]
 
         games.append(temp_dict)
 

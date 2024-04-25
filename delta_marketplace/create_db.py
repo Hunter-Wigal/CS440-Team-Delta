@@ -47,6 +47,7 @@ cursor.execute("""CREATE TABLE IF NOT EXISTS Games(
     genre VARCHAR(15),
     publisher_id INT NOT NULL,
     image_url VARCHAR(30) DEFAULT '',
+    description TEXT NOT NULL,
     FOREIGN KEY (publisher_id) REFERENCES Publishers(publisher_id)
 		ON UPDATE CASCADE
         ON DELETE RESTRICT

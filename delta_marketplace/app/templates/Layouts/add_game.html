@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% load static %}
+{%block content%}
+<header>
+    <title>Add game to store</title>
+</header>
+<style>
+    .game-container {
+        height: 750px;
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #F34213;
+        border: 2px solid #000F08;
+        border-radius: 10px;
+    }
+</style>
+<body>
+    <body style="background-color: #136F63">
+        <div class="game-container">
+            <h2 class="title">Add New Game</h2>
+            <form method="post" action="">
+                {% csrf_token %}
+                <div>
+                    <label for="name">Name:</label><br>
+                    <input type="text" id="name" name="name" required>
+                </div>
+                <div>
+                    <label for="description">Description:</label><br>
+                    <textarea id="description" name="description" required></textarea>
+                </div>
+                <div>
+                    <label for="genre">Genre:</label><br>
+                    <input type="text" id="genre" name="genre" required>
+                </div>
+                <div>
+                    <label for="rating">Rating:</label><br>
+                    <input type="text" id="rating" name="rating" required>
+                </div>
+                <button type="submit">Save</button>
+            </form>
+        </div>
+    </body>
+
+</body>
+{% endblock %}

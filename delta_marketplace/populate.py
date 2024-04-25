@@ -33,13 +33,14 @@ cursor = database.cursor()
 
 cursor.execute("""CREATE TABLE IF NOT EXISTS Publishers(
     publisher_id INT PRIMARY KEY,
-    mod_id INT UNIQUE,
+    username VARCHAR(50) UNIQUE,
     publisher_name VARCHAR(30) UNIQUE NOT NULL,
-    location VARCHAR(30) NOT NULL
+    location VARCHAR(30) NOT NULL,
+    FOREIGN KEY(username) REFERENCES Users(username) ON DELETE RESTRICT
     )""")
 
 cursor.execute("""CREATE TABLE IF NOT EXISTS Games(
-    game_id INT PRIMARY KEY,
+    game_id INT PRIMARY KEY AUTO_INCREMENT,
     title VARCHAR(50) NOT NULL,
     esrb VARCHAR(10) DEFAULT 'PENDING',
     release_date DATE NOT NULL,
@@ -71,8 +72,8 @@ games.append((541513, 'COD: Fish at War ', 27376, 'FPS', esrb_to_num('M'), datet
 games.append((985061, 'Fun Game 2', 3096, 'Adventure', esrb_to_num('T'), datetime.date(2023,4,15), 'imgs/sample3.png', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'))
 
 publishers = []
-publishers.append((27376, 'Actifishion', 'Charleston, WV'))
-publishers.append((3096, 'Nubisof', 'Wilmington, NC'))
+publishers.append((27376, "user", 'Actifishion', 'Charleston, WV'))
+publishers.append((3096, "bob", 'Nubisof', 'Wilmington, NC'))
 
 users = []
 users.append(("user", "real person", 'Real Person', datetime.date(1, 1, 1), "temp-password"))

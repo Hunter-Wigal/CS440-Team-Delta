@@ -20,7 +20,15 @@ cursor.execute("ALTER USER 'root'@'localhost' IDENTIFIED BY 'password';")
 cursor.execute("CREATE DATABASE IF NOT EXISTS delta_marketplace")
 
 cursor.execute("""USE delta_marketplace;""")               
-               
+
+cursor.execute("""CREATE TABLE IF NOT EXISTS Users(
+	username VARCHAR(30) PRIMARY KEY,
+    display_name VARCHAR(30),
+    full_name VARCHAR(50) NOT NULL,
+    email VARCHAR(50) NOT NULL,
+    password VARCHAR(50) NOT NULL
+);""")
+
 # Removed moderators table and mod_id replaced with username as foreign key.
 cursor.execute("""CREATE TABLE IF NOT EXISTS Publishers(
 	publisher_id INT PRIMARY KEY,
@@ -31,9 +39,6 @@ cursor.execute("""CREATE TABLE IF NOT EXISTS Publishers(
 		ON UPDATE CASCADE
 		ON DELETE RESTRICT
 );""")
-
-
-# esrb VARCHAR(10) DEFAULT 'PENDING',
 
 # Changed esrb to be an int to work with the procedure for updating ratings
 # Changed game_id to AUTO_INCREMENT
@@ -49,14 +54,6 @@ cursor.execute("""CREATE TABLE IF NOT EXISTS Games(
     FOREIGN KEY (publisher_id) REFERENCES Publishers(publisher_id)
 		ON UPDATE CASCADE
         ON DELETE RESTRICT
-);""")
-
-cursor.execute("""CREATE TABLE IF NOT EXISTS Users(
-	username VARCHAR(30) PRIMARY KEY,
-    display_name VARCHAR(30),
-    full_name VARCHAR(50) NOT NULL,
-    email VARCHAR(50) NOT NULL,
-    password VARCHAR(50) NOT NULL
 );""")
 
 cursor.execute("""CREATE TABLE IF NOT EXISTS Collectibles(

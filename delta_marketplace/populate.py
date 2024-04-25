@@ -32,7 +32,7 @@ database = mysql.connector.connect(
 cursor = database.cursor()
 
 games_sql = "INSERT INTO Games (game_id, title, publisher_id, genre, esrb, release_date, image_url, description) VALUES(%s, %s, %s, %s, %s, %s, %s, %s)"
-publishers_sql = "INSERT INTO Publishers (publisher_id, publisher_name, location) VALUES(%s, %s, %s)"
+publishers_sql = "INSERT INTO Publishers (publisher_id, username, publisher_name, location) VALUES(%s, %s, %s, %s)"
 users_sql = "INSERT INTO Users(username, display_name, full_name, email, password) VALUES (%s, %s, %s, %s, %s)"
 games_owned_sql = "INSERT INTO GamesOwned(username, game_id, owned_start, owned_end) VALUES (%s, %s, %s, %s)"
 collectibles_squl = "INSERT INTO Collectibles(collectible_id, game_id, image_url, collectible_name) VALUES (%s, %s, %s, %s)"

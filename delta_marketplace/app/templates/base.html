@@ -95,7 +95,7 @@
     }
   }
 
-  function login(p_email=undefined, p_password=underfined) {
+  function login(p_email=undefined, p_password=undefined) {
     if (p_email == undefined && p_password==undefined){
       let p_email= document.getElementById("login-username").value;
       let p_password = document.getElementById("login-password").value;
@@ -123,14 +123,16 @@
 
   function signup(){
     //var xmlHttp = new XMLHttpRequest("POST", "https://jsonplaceholder.typicode.com/posts/1");
-    console.log("Clicked");
     var p_username = $('#register-username').val();
     var p_email = $('#register-email').val();
     var first_name = $('#register-first-name').val();
     var last_name = $('#register-last-name').val();
     var p_password = $('#register-password').val();
     var full_name = first_name + " " + last_name;
-    $.post("http://127.0.0.1:8000/api/users/user", {email: p_email, username: p_username, name: full_name, password: p_password});
+    var publisher = $('#register-pub').is(':checked');
+    console.log(publisher);
+
+    $.post("http://127.0.0.1:8000/api/users/user", {email: p_email, username: p_username, name: full_name, password: p_password, publisher: publisher});
 
     login(p_email, p_password);
     window.location.replace(`http://127.0.0.1:8000/`);
@@ -246,6 +248,7 @@
           </button>
         </div>
         <div class="modal-body">
+          <h5>Publishers, username will be your displayed publisher name</h5>
           <form class="signup" id="signup" autocomplete="off">
             <div class="mb-1" style="padding-left: 10%; text-align:left;">Email Address</div>
             <input class="field" type="text" placeholder="Ex. johnseed21@mail.com" id="register-email">
@@ -259,6 +262,7 @@
             <input class="field" type="password" id="register-password">
             <div class="mt-3 mb-1" style="padding-left: 10%; text-align:left;">Confirm Password</div> 
             <input class="field" type="password">
+            Publisher?<input class="col ms-2 form-check-input" type="checkbox" id="register-pub">
             <a type="button" class="btn nav-link mt-3" style="text-align:center;" onclick="signup()">Signup</a>
           </form>
         </div>

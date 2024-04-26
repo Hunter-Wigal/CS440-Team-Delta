@@ -31,7 +31,7 @@ cursor.execute("""CREATE TABLE IF NOT EXISTS Users(
 
 # Removed moderators table and mod_id replaced with username as foreign key.
 cursor.execute("""CREATE TABLE IF NOT EXISTS Publishers(
-	publisher_id INT PRIMARY KEY,
+	publisher_id INT PRIMARY KEY AUTO_INCREMENT,
     username VARCHAR(30),
     publisher_name VARCHAR(30) UNIQUE NOT NULL,
     location VARCHAR(30),

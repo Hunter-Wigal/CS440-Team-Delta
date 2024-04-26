@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{%block content%}
+
+<head>
+    <title>Logout</title>
+    <link rel="stylesheet" href="{% static 'styles/style.css' %}">
+</head>
+<style>
+    .row {
+        margin: auto;
+    }
+</style>
+<script>
+    function redirect() {
+        window.location.replace(`http://127.0.0.1:8000/`)
+    }
+</script>
+
+<body onload="redirect()">
+    Logging out....
+</body>
+
+{% endblock %}

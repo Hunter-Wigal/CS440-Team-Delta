@@ -100,13 +100,12 @@
 
     var resp = $.get("http://127.0.0.1:8000/api/users/user", {email: p_email, password: p_password}, handleLogin);
 
-
-    //console.log(resp['status'])
-
-    
-
-
+    window.location.replace(`http://127.0.0.1:8000/`);
     //window.location.replace(`http://127.0.0.1:8000/account?user=${username}`);
+  }
+
+  function logout(){
+    window.location.replace(`http://127.0.0.1:8000/logout`);
   }
 
   var currentURL = window.location.pathname;
@@ -124,7 +123,6 @@
     var last_name = $('#register-last-name').val();
     var p_password = $('#register-password').val();
     var full_name = first_name + " " + last_name;
-    // user = {user: username, display_name: username, full_name: full_name, email: email, password: password};
     $.post("http://127.0.0.1:8000/api/users/user", {email: p_email, username: p_username, name: full_name, password: p_password});
   }
 
@@ -155,7 +153,7 @@
             </li>
 
             <li class="nav-item">
-              <a class="nav-link {% if user is not defined %} disabled {% endif %} {% if currentURL == accountURL %} active {% endif %}" href="account">
+              <a class="nav-link {% if user is none %} disabled {% endif %} {% if currentURL == accountURL %} active {% endif %}" href="account">
                 <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" class="bi bi-play-fill" viewBox="0 0 20 20">
                   <path d="m11.596 8.697-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393"/>
                 </svg>
@@ -164,7 +162,7 @@
             </li>
 
             <li class="nav-item">
-              <a class="nav-link {% if user is not defined %} disabled {% endif %} {% if currentURL == inventoryURL %} active {% endif %}" href="inventory">
+              <a class="nav-link {% if user is none %} disabled {% endif %} {% if currentURL == inventoryURL %} active {% endif %}" href="inventory">
                   <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" class="bi bi-play-fill" viewBox="0 0 20 20">
                     <path d="m11.596 8.697-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393"/>
                   </svg>
@@ -184,13 +182,16 @@
           </li>
         
           
-          {% if user is not defined %}
+          {% if user is none %}
             <button type="button" class="nav-link" style="border:0px; background:none;" data-bs-toggle="modal" data-bs-target="#loginModal">
               <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="currentColor" class="bi bi-box-arrow-in-right" viewBox="0 0 16 16">
                 <path fill-rule="evenodd" d="M6 3.5a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-2a.5.5 0 0 0-1 0v2A1.5 1.5 0 0 0 6.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-8A1.5 1.5 0 0 0 5 3.5v2a.5.5 0 0 0 1 0z"/>
                 <path fill-rule="evenodd" d="M11.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H1.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708z"/>
               </svg>
             </button>
+          {% else %}
+          <p class="mt-3">{{user.full_name}}</p>
+          <button class="btn btn-outline-danger ms-2" onclick="logout()">Logout</button>
           {% endif %}
         </ul>
       </div>
@@ -210,12 +211,12 @@
           </button>
         </div>
         <div class="modal-body">
-          <form id="login">
+          <form id="login" onsubmit="login()">
             <div class="mb-1" style="padding-left: 10%; text-align:left;">Email Address</div>
             <input class="field" autocomplete="off" type="text" placeholder="Ex. johnseed21@mail.com" id="login-username">
             <div class="mt-3 mb-1" style="padding-left: 10%; text-align:left;">Password</div> 
             <input class="field" autocomplete="off" type="password" id="login-password">
-            <a type="button" class="btn nav-link mt-3" style="text-align:center;" onclick="login()">Login</a>
+            <button class="btn nav-link mt-3 mx-auto" style="text-align:center;" onclick="login()" type="submit">Login</button>
           </form>
         </div>
         <div class="modal-footer" style="justify-content:center;">

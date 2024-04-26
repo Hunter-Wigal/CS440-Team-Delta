@@ -4,6 +4,15 @@ import os
 import random
 import mysql.connector
 
+
+def esrb_to_num(esrb):
+    ratings = ['E', 'E10+', 'T', 'M', 'A', 'RP']
+    
+    if not esrb in ratings:
+        return ratings.index('RP')
+    
+    return ratings.index(esrb)
+
 def execute_query(query: str):
     database = mysql.connector.connect(
         host=os.environ.get("DATABASE_HOST"),
@@ -26,14 +35,11 @@ def add_game(request: HttpRequest):
         # Parse data into variables
         title = request.POST['name']
         description = request.POST['description']
-        esrb = request.POST['esrb']
+        esrb = esrb_to_num(request.POST['esrb'])
         release_date = request.POST['date']
         genre = request.POST['genre']
         image_url = request.POST['image']
-        
-        # Currently using an RNG need to change this to what we want to do.
-        game_id = random.randint(1, 100)
-        
+        publisher_id = 3096
         try:
             #Establish connection to DB
             database = mysql.connector.connect(
@@ -44,15 +50,16 @@ def add_game(request: HttpRequest):
             )
             cursor = database.cursor()
             
-            insert_query = "INSERT INTO Games (game_id, title, esrb, release_date, genre, publisher_id, image_url, description) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"
-            values = (game_id, title, esrb, release_date, genre, 3096, image_url, description)
+            insert_query = "INSERT INTO Games (title, esrb, release_date, genre, publisher_id, image_url, description) VALUES (%s, %s, %s, %s, %s, %s, %s)"
+            values = (title, esrb, release_date, genre, publisher_id, image_url, description)
             cursor.execute(insert_query, values)
             
             database.commit()
             
             cursor.close()
             
-            return redirect('publisher_dashboard')
+            print("Successfully added game into database!")
+            return redirect('publisher_dashboard', pk=publisher_id)
         
         except mysql.connector.Error as err:
             return HttpResponse(f"Error: {err}")

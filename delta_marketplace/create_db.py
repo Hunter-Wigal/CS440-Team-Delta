@@ -49,7 +49,7 @@ cursor.execute("""CREATE TABLE IF NOT EXISTS Games(
     release_date DATE NOT NULL,
     genre VARCHAR(15),
     publisher_id INT NOT NULL,
-    image_url VARCHAR(30) DEFAULT '',
+    image_url VARCHAR(255) DEFAULT '',
     description TEXT NOT NULL,
     FOREIGN KEY (publisher_id) REFERENCES Publishers(publisher_id)
 		ON UPDATE CASCADE
@@ -59,7 +59,7 @@ cursor.execute("""CREATE TABLE IF NOT EXISTS Games(
 cursor.execute("""CREATE TABLE IF NOT EXISTS Collectibles(
 	collectible_id INT PRIMARY KEY,
     game_id INT NOT NULL,
-    image_url VARCHAR(30) DEFAULT '',
+    image_url VARCHAR(255) DEFAULT '',
     collectible_name VARCHAR(30),
     UNIQUE(collectible_id, game_id),
     FOREIGN KEY (game_id) REFERENCES Games(game_id)

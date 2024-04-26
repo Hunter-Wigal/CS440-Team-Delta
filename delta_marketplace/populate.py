@@ -31,7 +31,7 @@ database = mysql.connector.connect(
 # cursor
 cursor = database.cursor()
 
-games_sql = "INSERT INTO Games (game_id, title, publisher_id, genre, esrb, release_date, image_url, description) VALUES(%s, %s, %s, %s, %s, %s, %s, %s)"
+games_sql = "INSERT INTO Games (title, publisher_id, genre, esrb, release_date, image_url, description) VALUES(%s, %s, %s, %s, %s, %s, %s)"
 publishers_sql = "INSERT INTO Publishers (publisher_id, username, publisher_name, location) VALUES(%s, %s, %s, %s)"
 users_sql = "INSERT INTO Users(username, display_name, full_name, email, password) VALUES (%s, %s, %s, %s, %s)"
 games_owned_sql = "INSERT INTO GamesOwned(username, game_id, owned_start, owned_end) VALUES (%s, %s, %s, %s)"
@@ -40,9 +40,9 @@ collectibles_owned_sql = "INSERT INTO CollectiblesOwned(username, collectible_id
 
 games = []
 # games.append((0, "A game", datetime.date(2020, 5, 5)))
-games.append((384560, 'Fun Game', 3096, 'Action', esrb_to_num('E'), datetime.date(2020,2,1), 'imgs/img.png', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'))
-games.append((541513, 'COD: Fish at War ', 27376, 'FPS', esrb_to_num('M'), datetime.date(2012,11,24), 'imgs/sample2.png', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'))
-games.append((985061, 'Fun Game 2', 3096, 'Adventure', esrb_to_num('T'), datetime.date(2023,4,15), 'imgs/sample3.png', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'))
+games.append(('Fun Game', 3096, 'Action', esrb_to_num('E'), datetime.date(2020,2,1), 'imgs/img.png', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'))
+games.append(('COD: Fish at War ', 27376, 'FPS', esrb_to_num('M'), datetime.date(2012,11,24), 'imgs/sample2.png', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'))
+games.append(('Fun Game 2', 3096, 'Adventure', esrb_to_num('T'), datetime.date(2023,4,15), 'imgs/sample3.png', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'))
 
 collectibles = []
 collectibles.append((403266, 384560, 'imgs/item1.png', 'fun item'))

@@ -19,7 +19,7 @@
 <body style="background-color: #136F63">
     <div class="game-container">
         <h2 class="title">Add New Game</h2>
-        <form method="post" action="">
+        <form method="post" action="{% url 'add_game' %}">
             {% csrf_token %}
             <div>
                 <label for="name">Name of Game:</label><br>
@@ -34,12 +34,12 @@
                 <input type="date" id="date" name="date" required>
             </div>
             <div>
-                <label for="esrb">Rating:</label><br>
+                <label for="esrb">ESRB Rating:</label><br>
                 <input type="text" id="esrb" name="esrb" required>
             </div>
             <div>
-                <label for="image">Image:</label><br>
-                <input type="file" id="image" name="image"><br>
+                <label for="image">Image Url:</label><br>
+                <input type="text" id="image_url" name="image"><br>
             </div>
             <div>
                 <label for="description">Description:</label><br>

@@ -8,5 +8,6 @@ urlpatterns = [
     path('get_user_games', views.get_user_games),
     path('game', views.single_game),
     path('collectibles', views.collectibles),
-    path('collectibles_owned', views.collectibles_owned)
+    path('collectibles_owned', views.collectibles_owned),
+    path('get_publishers_games', views.get_publishers_games)
 ]

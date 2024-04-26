@@ -2,6 +2,7 @@ from django.http import HttpRequest, HttpResponse, JsonResponse
 from django.shortcuts import redirect, render
 import os
 import random
+from django.urls import reverse
 import mysql.connector
 
 
@@ -64,6 +65,31 @@ def add_game(request: HttpRequest):
         except mysql.connector.Error as err:
             return HttpResponse(f"Error: {err}")
 
+def remove_game(request: HttpRequest):
+    if request.method == 'POST':
+        game_id = request.POST.get('game_id')
+        publisher_id = request.POST.get('publisher_id')
+        print("This is the publisher_id:", publisher_id)
+        
+        try:
+             #Establish connection to DB
+            database = mysql.connector.connect(
+                host= os.environ.get("DATABASE_HOST"),
+                user=os.environ.get("USER"),
+                passwd=os.environ.get("PASSWORD"),
+                database="delta_marketplace"
+            )
+            cursor = database.cursor()
+            delete_query = "DELETE FROM games WHERE game_id = %s"
+            cursor.execute(delete_query, [game_id])
+            database.commit()
+            cursor.close()
+                
+        except Exception as e:
+            return JsonResponse({'error': str(e)} , status=500)
+
+        return redirect('publisher_dashboard', publisher_id)
+    return JsonResponse({'error': 'Invalid request method'}, status=405)
 
 # Create your views here.
 def publisher(request: HttpRequest):
@@ -77,7 +103,7 @@ def publisher(request: HttpRequest):
         
         publisher = {}
         publisher["id"] = publisher_result[0]
-        publisher["mod_id"] = publisher_result[1]
+        publisher["username"] = publisher_result[1]
         publisher["name"] = publisher_result[2]
         publisher["location"] = publisher_result[3]
         

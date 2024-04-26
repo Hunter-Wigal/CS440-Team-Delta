@@ -84,7 +84,6 @@ def get_all(request: HttpRequest):
 
     return JsonResponse(to_return)
 
-
 # Returns games that have a matched term in the passed GET parameter
 def get_games(request: HttpRequest):
     if request.method == "GET":
@@ -110,6 +109,23 @@ def get_games(request: HttpRequest):
         to_return['games'] = available_games
         
         return JsonResponse(to_return)
+    
+    return HttpResponseNotAllowed(['GET'])
+
+def get_publishers_games(request: HttpRequest):
+    if request.method == 'GET':
+        publisher_id = request.GET.get('p')
+        
+        try:
+            publisher_id = int(publisher_id.strip('{}\'"'))
+        except ValueError:
+            return JsonResponse({'error': 'Invalid publisher_id'})
+        
+        query = f"SELECT * FROM games WHERE publisher_id = {publisher_id}"
+        
+        games_published = fetch_games(query)
+        
+        return JsonResponse(games_published)
     
     return HttpResponseNotAllowed(['GET'])
 

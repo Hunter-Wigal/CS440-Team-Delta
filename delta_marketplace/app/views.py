@@ -23,7 +23,7 @@ class Game:
 @dataclass
 class Publisher:
     id: int
-    mod_id: int
+    username: str
     name: str
     location: str
 
@@ -203,13 +203,23 @@ def single_game_view(request: HttpRequest, pk):
     publisher_resp = requests.get("http://127.0.0.1:8000/api/publishers/publisher?p=%s" % (pub_id)).json()['publisher']
     
     # Convert the json into a publisher object
-    publisher = Publisher(publisher_resp['id'], publisher_resp['mod_id'], publisher_resp['name'], publisher_resp['location'])
+    publisher = Publisher(publisher_resp['id'], publisher_resp['username'], publisher_resp['name'], publisher_resp['location'])
 
     
     return render(request, "layouts/game.html", {"game": game, "publisher": publisher})
 
 def publisher_dashboard(request: HttpRequest, pk):
-    return render(request, "layouts/publisher_dashboard.html") 
+    # Get the publisher id of the game
+    pub_id = pk
+    # Get the publisher information associated with the id
+    publisher_resp = requests.get("http://127.0.0.1:8000/api/publishers/publisher?p=%s" % (pub_id)).json()['publisher']
+    publisher = Publisher(publisher_resp['id'], publisher_resp['username'], publisher_resp['name'], publisher_resp['location'])
+        
+    
+    games_published_resp = requests.get("http://127.0.0.1:8000/api/games/get_publishers_games?p=%s"%{pk})
+    games_published = game_resp_to_list(games_published_resp)
+    
+    return render(request, "layouts/publisher_dashboard.html", {"games_published": games_published, "publisher": publisher}) 
 
 def add_game_view(request: HttpRequest):
     return render(request, "layouts/add_game.html")

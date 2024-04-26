@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from random import randrange
 from django.http import HttpResponse, JsonResponse, HttpRequest
 from django.shortcuts import render
 import mysql.connector
@@ -103,7 +104,13 @@ def user(request: HttpRequest):
 
         query = add_user_sql % (username, username, full_name, email, password)
         contents = execute_query(query)
-        print(contents)
+        
+        publisher = bool(request.POST['publisher'])
+        
+        if publisher:
+            pub_sql = "INSERT INTO Publishers (username, publisher_name, location) VALUES (%s, %s, 'TBD')" % (username, email)
+
+            execute_query(pub_sql)
         
         return HttpResponse(200)
     

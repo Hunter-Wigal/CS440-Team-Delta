@@ -21,10 +21,10 @@ Before running the sever, setup the database using the information provided in t
 
 
 ## Current Database Setup
-The application is currently setup to use MySQL on your local machine. The create_db.py file in the top level delta_marketplace directory will create the database for you if the correct user and password are specified in the settings.py file. If your MySQL password is anything other than 'password', make sure to either change your MySQL password or change the password listed under DATABASES in settings.py. 
+The application is currently setup to use MySQL on your local machine. The create_db.py file in the top level delta_marketplace directory will create the database for you if the correct user and password are specified in the settings.py file. If your MySQL password is anything other than 'password', make sure to either change your MySQL password or change the password listed in the .env file.
 
-After installing the requirements with the command above, execute the create_db.py file to create the required database.
+After installing the package requirements with the command aboin the installation section, execute the create_db.py file to create the required database.
 
 Then call the manage.py file with 'python manage.py migrate' to apply the database changes.
 
-The populate.py file will add some test values to the database, currently just for the games table in order to display game information on the home page.
+Call populate.py to add some example data to the databases. It may need to be called multiple times due to errors with foreign key restraints.

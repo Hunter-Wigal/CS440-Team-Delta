@@ -127,7 +127,7 @@ BEGIN
         -- Update the ESRB rating to the maximum of the current rating and the minimum allowed rating
         UPDATE Games
         SET esrb = GREATEST(esrb, min_rating)
-        WHERE game_id = p_game_id;
+        WHERE genre = p_genre;
     -- ELSE
         -- Logic for other ratings
     END IF;

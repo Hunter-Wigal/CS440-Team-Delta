@@ -297,14 +297,15 @@ def publisher_dashboard(request: HttpRequest, pk, user=None):
     # Get the publisher information associated with the id
     publisher_resp = requests.get(
         "http://127.0.0.1:8000/api/publishers/publisher?p=%s" % (pub_id)
-    ).json()["publisher"]
+    ).json()['publisher']
+    
     publisher = Publisher(
         publisher_resp["id"],
         publisher_resp["username"],
         publisher_resp["name"],
         publisher_resp["location"],
     )
-
+    pk = publisher.id
     games_published_resp = requests.get(
         "http://127.0.0.1:8000/api/games/get_publishers_games?p=%s" % {pk}
     )

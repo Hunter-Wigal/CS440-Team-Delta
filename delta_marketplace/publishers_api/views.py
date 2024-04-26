@@ -64,6 +64,48 @@ def add_game(request: HttpRequest):
         
         except mysql.connector.Error as err:
             return HttpResponse(f"Error: {err}")
+        
+def update_game(request: HttpRequest):
+    if request.method == 'POST':
+        # Parse data into variables
+        game_id = request.POST['game_id']
+        title = request.POST['name']
+        description = request.POST['description']
+        esrb = esrb_to_num(request.POST['esrb'])
+        release_date = request.POST['date']
+        genre = request.POST['genre']
+        image_url = request.POST['image']
+        publisher_id = request.POST['publisher_id']
+        
+        try:
+            #Establish connection to DB
+            database = mysql.connector.connect(
+                host= os.environ.get("DATABASE_HOST"),
+                user=os.environ.get("USER"),
+                passwd=os.environ.get("PASSWORD"),
+                database="delta_marketplace"
+            )
+            cursor = database.cursor()
+            
+            update_query = """
+                UPDATE Games 
+                SET title = %s, esrb = %s, release_date = %s, 
+                genre = %s, publisher_id = %s, image_url = %s, 
+                description = %s 
+                WHERE game_id = %s
+            """
+            values = (title, esrb, release_date, genre, publisher_id, image_url, description, game_id)
+            cursor.execute(update_query, values)
+            
+            database.commit()
+            
+            cursor.close()
+            
+            print("Successfully updated game into database!")
+            return redirect('publisher_dashboard', pk=publisher_id)
+        
+        except mysql.connector.Error as err:
+            return HttpResponse(f"Error: {err}")
 
 def remove_game(request: HttpRequest):
     if request.method == 'POST':

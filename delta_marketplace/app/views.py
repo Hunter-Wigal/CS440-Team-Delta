@@ -224,6 +224,14 @@ def publisher_dashboard(request: HttpRequest, pk):
 def add_game_view(request: HttpRequest):
     return render(request, "layouts/add_game.html")
 
+def edit_game_view(request: HttpRequest, pk):
+    
+     # Request the game with the passed id
+    game_resp = requests.get("http://127.0.0.1:8000/api/games/game?g=%s" %(pk))
+    game = game_resp_to_list(game_resp, games_key="game")[0]
+    
+    return render(request, "layouts/edit_game.html", {"game": game})
+
 def inventory(request: HttpRequest):#, user):
     # Temporary, need a way to distinguish logged in user
 

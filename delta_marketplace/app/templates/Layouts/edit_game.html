@@ -18,34 +18,37 @@
 
 <body style="background-color: #136F63">
     <div class="game-container">
-        <h2 class="title">Add New Game</h2>
-        <form method="post" action="">
+        <h2 class="title">Edit Game</h2>
+        <form method="post" enctype="multipart/form-data" action="{% url 'update_game' %}">
             {% csrf_token %}
             <div>
                 <label for="name">Name of Game:</label><br>
-                <input type="text" id="name" name="name" required>
+                <input type="text" id="name" name="name" value="{{ game.name }}"required>
             </div>
             <div>
                 <label for="genre">Genre:</label><br>
-                <input type="text" id="genre" name="genre" required>
+                <input type="text" id="genre" name="genre" value="{{ game.genre }}" required>
             </div>
             <div>
                 <label for="date">Release Date:</label><br>
-                <input type="date" id="date" name="date" required>
+                <input type="date" id="date" name="date" value="{{ game.release_date }}" required>
             </div>
             <div>
                 <label for="esrb">Rating:</label><br>
-                <input type="text" id="esrb" name="esrb" required>
+                <input type="text" id="esrb" name="esrb" value="{{ game.esrb }}" required>
             </div>
             <div>
                 <label for="image">Image:</label><br>
-                <input type="file" id="image" name="image"><br>
+                <input type="text" id="image" name="image" value="{{ game.image_url }}"><br>
+                <img src="{{ game.image_url }}" alt="Current Image for {{ game.name }}">
             </div>
             <div>
                 <label for="description">Description:</label><br>
-                <textarea id="description" name="description" required></textarea>
+                <textarea id="description" name="description" required>{{ game.description }}</textarea>
             </div>
-            <button class="btn btn-primary my-2" type="submit">Add Game</button>
+            <input type="hidden" name="publisher_id" value="{{ game.publisher_id}}">
+            <input type="hidden" name="game_id" value="{{ game.id }}">
+            <button class="btn btn-primary my-2" type="submit">Edit Game</button>
         </form>
     </div>
 </body>

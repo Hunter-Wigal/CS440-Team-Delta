@@ -4,6 +4,8 @@ from django.shortcuts import render
 import mysql.connector
 import json
 import os
+from datetime import datetime
+from django.views.decorators.csrf import csrf_exempt
 
 def num_to_esrb(num):
     ratings = ['E', 'E10+', 'T', 'M', 'A', 'RP']
@@ -20,7 +22,7 @@ def esrb_to_num(esrb):
     
     return ratings.index(esrb)
 
-def execute_query(query: str):
+def execute_query(query: str, results=True):
     database = mysql.connector.connect(
         host=os.environ.get("DATABASE_HOST"),
         user=os.environ.get("USER"),
@@ -32,10 +34,11 @@ def execute_query(query: str):
     cursor = database.cursor()
 
     cursor.execute(query)
-
-    contents = cursor.fetchall()
     
-    return contents
+    if results:
+        contents = cursor.fetchall()
+        
+        return contents
 
 # Add a user to the database
 def add_user(query: str):
@@ -256,3 +259,29 @@ def collectibles_owned(request):
         to_return = {}
         to_return['collectibles'] = collectibles
         return JsonResponse(to_return)
+    
+@csrf_exempt
+def purchase(request: HttpRequest):
+    if request.method == "POST":
+        userID = request.POST["u"]
+        gameID = request.POST["g"]
+        
+        # Purchasing or renting
+        type = request.POST["t"]
+        
+        owned_start = datetime.today().date()
+        owned_end = datetime(3000, 1, 1).date()
+        if type != "buy":
+            owned_end = owned_start + datetime.today().date() + 30
+        
+        purchase_sql = "INSERT INTO GamesOwned(username, game_id, owned_start, owned_end) VALUES ('%s', '%s', '%s', '%s')" % (userID, gameID, owned_start, owned_end)
+        print(purchase_sql)
+        execute_query(purchase_sql, False)
+        
+        response = HttpResponse()
+        response.status_code = 200
+        return response
+    
+    response = HttpResponse()
+    response.status_code = 401
+    return response

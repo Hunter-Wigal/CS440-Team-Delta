@@ -72,7 +72,7 @@
 
 <script>
   function searchRedirect() {
-    let searchValue = document.getElementById("search-term").value;
+    let searchValue = document.getElementById("gamesearch").value;
 
     console.log(searchValue);
 
@@ -94,11 +94,17 @@
     }
   }
 
-  function login() {
-    let p_email= document.getElementById("login-username").value;
-    let p_password = document.getElementById("login-password").value;
+  function login(p_email=undefined, p_password=underfined) {
+    if (p_email == undefined && p_password==undefined){
+      let p_email= document.getElementById("login-username").value;
+      let p_password = document.getElementById("login-password").value;
+  
+      var resp = $.get("http://127.0.0.1:8000/api/users/user", {email: p_email, password: p_password}, handleLogin);
+    }
+    else{
+      var resp = $.get("http://127.0.0.1:8000/api/users/user", {email: p_email, password: p_password}, handleLogin);
+    }
 
-    var resp = $.get("http://127.0.0.1:8000/api/users/user", {email: p_email, password: p_password}, handleLogin);
 
     window.location.replace(`http://127.0.0.1:8000/`);
     //window.location.replace(`http://127.0.0.1:8000/account?user=${username}`);
@@ -124,6 +130,9 @@
     var p_password = $('#register-password').val();
     var full_name = first_name + " " + last_name;
     $.post("http://127.0.0.1:8000/api/users/user", {email: p_email, username: p_username, name: full_name, password: p_password});
+
+    login(p_email, p_password);
+    window.location.replace(`http://127.0.0.1:8000/`);
   }
 
 </script>
@@ -172,13 +181,15 @@
           </li>
 
           <li class="nav-item row">
-            <input class="field col" autocomplete="off" name="search-term" style="width: 400px; border:none; user-select:none; padding-left:15px; border-top-left-radius: 20px; border-bottom-left-radius: 20px; margin-right:0px;" id="search-term" placeholder="Find a Game"
+            <form action="/search">
+            <input class="field col" autocomplete="off" name="gamesearch" style="width: 400px; border:none; user-select:none; padding-left:15px; border-top-left-radius: 20px; border-bottom-left-radius: 20px; margin-right:0px;" id="gamesearch" placeholder="Find a Game"
               aria-label="Search" style="min-width: 200px;">
-            <button class="btn btn-primary col" style="border:none; width: 3px; background-color: #136F63; border-top-left-radius: 0px; border-bottom-left-radius: 0px; border-top-right-radius: 20px; border-bottom-right-radius: 20px;" onclick="searchRedirect()">
+            <button class="btn btn-primary col mb-2 py-2" type="submit" style="border:none; background-color: #136F63; border-top-left-radius: 0px; border-bottom-left-radius: 0px; border-top-right-radius: 20px; border-bottom-right-radius: 20px;" onclick="searchRedirect()">
               <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
                 <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
               </svg>
             </button>
+          </form>
           </li>
         
           

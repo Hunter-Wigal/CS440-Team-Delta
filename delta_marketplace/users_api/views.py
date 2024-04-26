@@ -102,7 +102,7 @@ def user(request: HttpRequest):
         # display_name = username
 
         query = add_user_sql % (username, username, full_name, email, password)
-        contents = execute_query()
+        contents = execute_query(query)
         print(contents)
         
         return HttpResponse(200)

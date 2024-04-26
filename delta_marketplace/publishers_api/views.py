@@ -133,23 +133,29 @@ def remove_game(request: HttpRequest):
         return redirect('publisher_dashboard', publisher_id)
     return JsonResponse({'error': 'Invalid request method'}, status=405)
 
-# Create your views here.
+
 def publisher(request: HttpRequest):
     if request.method == "GET":
         
         # Set publisher to the passed publisher id
         pub = request.GET.get('p')
-        publisher_query = "SELECT * FROM publishers WHERE publisher_id = {id}".format(id=pub)
+        publisher_query = "SELECT * FROM publishers WHERE username = '{id}'".format(id=pub)
 
-        publisher_result = execute_query(publisher_query)[0]
-        
-        publisher = {}
-        publisher["id"] = publisher_result[0]
-        publisher["username"] = publisher_result[1]
-        publisher["name"] = publisher_result[2]
-        publisher["location"] = publisher_result[3]
-        
+        publisher_result = execute_query(publisher_query)
+ 
         to_return = {}
-        to_return['publisher'] = publisher
+        if len(publisher_result) > 0:
+            publisher_result = publisher_result[0]
+            publisher = {}
+            publisher["id"] = publisher_result[0]
+            publisher["username"] = publisher_result[1]
+            publisher["name"] = publisher_result[2]
+            publisher["location"] = publisher_result[3]
+            
+            print("checking")
+            to_return['publisher'] = publisher
+            
+        else:
+            to_return = {'publisher': 'none'}
         
         return JsonResponse(to_return)

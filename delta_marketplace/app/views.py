@@ -36,6 +36,7 @@ class User:
     display_name: str
     full_name: str
     email: str
+    publisher:bool = False
 
 
 @dataclass
@@ -76,7 +77,13 @@ def get_user(username: str):
         user = User(
             json["username"], json["dname"], json["full_name"], json["email"]
         )
-
+        
+        resp = requests.get(f"http://127.0.0.1:8000/api/publishers/publisher?p={user.username}")
+        
+        if not(resp.json()['publisher'] == 'none'):
+            user.publisher = True
+            print("publisher")
+        
     return user
 
 # Decorator for adding a user to the request. Used specifically for the navbar
@@ -109,22 +116,26 @@ def game_resp_to_list(resp: requests.Response, games_key="games"):
     """
     resp_dict = resp.json()
 
-    games: List[Game] = []
-    for item in resp_dict[games_key]:
-        temp_game = Game(
-            int(item["id"]),
-            item["name"],
-            item["esrb"],
-            item["release_date"],
-            item["genre"],
-            int(item["publisher_id"]),
-            item["image_url"],
-            item["description"],
-        )
+    if games_key in resp_dict:
+        games: List[Game] = []
+        for item in resp_dict[games_key]:
+            temp_game = Game(
+                int(item["id"]),
+                item["name"],
+                item["esrb"],
+                item["release_date"],
+                item["genre"],
+                int(item["publisher_id"]),
+                item["image_url"],
+                item["description"],
+            )
 
-        games.append(temp_game)
+            games.append(temp_game)
 
-    return games
+            return games
+        
+    else:
+        return []
 
 
 class SignupForm(forms.Form):

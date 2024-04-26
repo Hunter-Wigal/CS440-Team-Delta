@@ -14,7 +14,12 @@
         }
 
         img {
-            height: 250px;
+            object-fit:cover;
+            border:solid 2px;
+            border-radius:25px;
+            border-color:#000F08;
+            width:100%;
+            height: 300px;
         }
 
         .row {
@@ -48,8 +53,11 @@
         }
         
         /* Style for carousel items */
-        .carousel-item {
-            height: 300px;
+        .carousel-item { 
+            object-fit:cover;
+            width:100%; 
+            height:100%; 
+            border-radius:20px;
         }
         
         /* Style for invisible clickable areas */
@@ -89,25 +97,23 @@
 
 <body class="col align-items-center">
         <h2>Games Recommended For You!</h2><br>
-        <div id="carouselExampleDark" class="carousel carousel-dark slide" style="width:60%;" data-bs-ride="carousel">
-            <div class="carousel-inner">
+        <div id="banners" class="carousel carousel-dark slide" style="width:100%;" data-bs-ride="carousel">
+            <div class="carousel-inner" style="width:60%; margin:auto; border-radius:25px;">
                 <div class="carousel-item active">
-                    <img src="{% static 'imgs/sample2.png' %}" alt="...">
-                    <p class="carousel-caption d-none d-md-block"></p>
+                    <img src="{% static 'imgs/NVbanner.png' %}" alt="...">
                 </div>
-                <div class="carousel-item active">
-                    <img src="{% static 'imgs/sample3.png' %}" alt="...">
-                    <p class="carousel-caption d-none d-md-block"></p>
+                <div class="carousel-item">
+                    <img src="{% static 'imgs/CWbanner.jpeg' %}" alt="...">
                 </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#banners" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                  </button>
+                  <button class="carousel-control-next" type="button" data-bs-target="#banners" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                  </button>
             </div>
-            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="prev">
-                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Previous</span>
-              </button>
-              <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="next">
-                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Next</span>
-              </button>
         </div>
     </div>
 

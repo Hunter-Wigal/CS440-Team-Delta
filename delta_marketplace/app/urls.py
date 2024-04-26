@@ -5,8 +5,8 @@ from . import views
 urlpatterns = [
     path('', views.store, name='store'),
     path('listing', views.listing),
-    path('account', views.account),
-    path('inventory', views.inventory),
+    path('account', views.account, name="account"),
+    path('inventory', views.inventory, name="inventory"),
     path('games', views.games),
     path('search', views.search, name='search'),
     path('game/<str:pk>/', views.single_game_view, name="game"),

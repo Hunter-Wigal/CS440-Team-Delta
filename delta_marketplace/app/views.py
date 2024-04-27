@@ -36,6 +36,7 @@ class User:
     display_name: str
     full_name: str
     email: str
+    publisher:bool = False
 
 
 @dataclass
@@ -76,7 +77,13 @@ def get_user(username: str):
         user = User(
             json["username"], json["dname"], json["full_name"], json["email"]
         )
-
+        
+        resp = requests.get(f"http://127.0.0.1:8000/api/publishers/publisher?p={user.username}")
+        
+        if not(resp.json()['publisher'] == 'none'):
+            user.publisher = True
+            print("publisher")
+        
     return user
 
 # Decorator for adding a user to the request. Used specifically for the navbar
@@ -109,22 +116,26 @@ def game_resp_to_list(resp: requests.Response, games_key="games"):
     """
     resp_dict = resp.json()
 
-    games: List[Game] = []
-    for item in resp_dict[games_key]:
-        temp_game = Game(
-            int(item["id"]),
-            item["name"],
-            item["esrb"],
-            item["release_date"],
-            item["genre"],
-            int(item["publisher_id"]),
-            item["image_url"],
-            item["description"],
-        )
+    if games_key in resp_dict:
+        games: List[Game] = []
+        for item in resp_dict[games_key]:
+            temp_game = Game(
+                int(item["id"]),
+                item["name"],
+                item["esrb"],
+                item["release_date"],
+                item["genre"],
+                int(item["publisher_id"]),
+                item["image_url"],
+                item["description"],
+            )
 
-        games.append(temp_game)
+            games.append(temp_game)
 
-    return games
+            return games
+        
+    else:
+        return []
 
 
 class SignupForm(forms.Form):
@@ -242,7 +253,7 @@ def search(request: HttpRequest, search_results=[], user=None):
         )
         search_results = game_resp_to_list(resp)
 
-        if len(search_results) < 1:
+        if search_results != None and len(search_results) < 1:
             search_results = None
             print("No results found")
 
@@ -286,14 +297,15 @@ def publisher_dashboard(request: HttpRequest, pk, user=None):
     # Get the publisher information associated with the id
     publisher_resp = requests.get(
         "http://127.0.0.1:8000/api/publishers/publisher?p=%s" % (pub_id)
-    ).json()["publisher"]
+    ).json()['publisher']
+    
     publisher = Publisher(
         publisher_resp["id"],
         publisher_resp["username"],
         publisher_resp["name"],
         publisher_resp["location"],
     )
-
+    pk = publisher.id
     games_published_resp = requests.get(
         "http://127.0.0.1:8000/api/games/get_publishers_games?p=%s" % {pk}
     )

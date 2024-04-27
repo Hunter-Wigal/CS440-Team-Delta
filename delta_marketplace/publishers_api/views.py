@@ -4,6 +4,7 @@ import os
 import random
 from django.urls import reverse
 import mysql.connector
+import requests
 
 
 def esrb_to_num(esrb):
@@ -40,7 +41,13 @@ def add_game(request: HttpRequest):
         release_date = request.POST['date']
         genre = request.POST['genre']
         image_url = request.POST['image']
-        publisher_id = 3096
+        
+        # TODO could probably use better error handling. Assume the user has to be logged in I guess
+        username = request.COOKIES['username']
+        # TODO Api call in the same api. Yes there are probably better ways
+        pub_resp = requests.get(f"http://127.0.0.1:8000/api/publishers/publisher?p={username}").json()
+        publisher_id = pub_resp['publisher']['id']
+        
         try:
             #Establish connection to DB
             database = mysql.connector.connect(
@@ -55,11 +62,19 @@ def add_game(request: HttpRequest):
             values = (title, esrb, release_date, genre, publisher_id, image_url, description)
             cursor.execute(insert_query, values)
             
+            
+            min_rating = esrb_to_num('M')
+            # Call this when adding a game to make sure the rating is correct
+            # procedure_sql = "CALL UpdateESRBByGenre(%s, 'Horror', %s);" % (game_id, min_rating)
+            # execute_query(procedure_sql)
+            
             database.commit()
             
             cursor.close()
             
             print("Successfully added game into database!")
+            # Temporary fix. Using username instead of id
+            publisher_id = request.COOKIES['username']
             return redirect('publisher_dashboard', pk=publisher_id)
         
         except mysql.connector.Error as err:
@@ -102,6 +117,9 @@ def update_game(request: HttpRequest):
             cursor.close()
             
             print("Successfully updated game into database!")
+            
+            # Temporary fix. Using username instead of id
+            publisher_id = request.COOKIES['username']
             return redirect('publisher_dashboard', pk=publisher_id)
         
         except mysql.connector.Error as err:
@@ -111,7 +129,6 @@ def remove_game(request: HttpRequest):
     if request.method == 'POST':
         game_id = request.POST.get('game_id')
         publisher_id = request.POST.get('publisher_id')
-        print("This is the publisher_id:", publisher_id)
         
         try:
              #Establish connection to DB
@@ -130,26 +147,32 @@ def remove_game(request: HttpRequest):
         except Exception as e:
             return JsonResponse({'error': str(e)} , status=500)
 
+        # Temporary fix. Using username instead of id
+        publisher_id = request.COOKIES['username']
         return redirect('publisher_dashboard', publisher_id)
     return JsonResponse({'error': 'Invalid request method'}, status=405)
 
-# Create your views here.
+
 def publisher(request: HttpRequest):
     if request.method == "GET":
-        
         # Set publisher to the passed publisher id
         pub = request.GET.get('p')
-        publisher_query = "SELECT * FROM publishers WHERE publisher_id = {id}".format(id=pub)
+        publisher_query = "SELECT * FROM publishers WHERE username = '{id}'".format(id=pub)
 
-        publisher_result = execute_query(publisher_query)[0]
-        
-        publisher = {}
-        publisher["id"] = publisher_result[0]
-        publisher["username"] = publisher_result[1]
-        publisher["name"] = publisher_result[2]
-        publisher["location"] = publisher_result[3]
-        
+        publisher_result = execute_query(publisher_query)
+ 
         to_return = {}
-        to_return['publisher'] = publisher
+        if len(publisher_result) > 0:
+            publisher_result = publisher_result[0]
+            publisher = {}
+            publisher["id"] = publisher_result[0]
+            publisher["username"] = publisher_result[1]
+            publisher["name"] = publisher_result[2]
+            publisher["location"] = publisher_result[3]
+            
+            to_return['publisher'] = publisher
+            
+        else:
+            to_return = {'publisher': 'none'}
         
         return JsonResponse(to_return)

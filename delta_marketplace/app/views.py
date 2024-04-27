@@ -253,7 +253,7 @@ def search(request: HttpRequest, search_results=[], user=None):
         )
         search_results = game_resp_to_list(resp)
 
-        if len(search_results) < 1:
+        if search_results != None and len(search_results) < 1:
             search_results = None
             print("No results found")
 

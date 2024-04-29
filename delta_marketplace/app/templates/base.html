@@ -129,10 +129,10 @@
     var last_name = $('#register-last-name').val();
     var p_password = $('#register-password').val();
     var full_name = first_name + " " + last_name;
-    var publisher = $('#register-pub').is(':checked');
-    console.log(publisher);
+    var publisher_bool = $('#register-pub').is(':checked').toString();
+    console.log(publisher_bool);
 
-    $.post("http://127.0.0.1:8000/api/users/user", {email: p_email, username: p_username, name: full_name, password: p_password, publisher: publisher});
+    $.post("http://127.0.0.1:8000/api/users/user", {email: p_email, username: p_username, name: full_name, password: p_password, publisher: publisher_bool});
 
     login(p_email, p_password);
     window.location.replace(`http://127.0.0.1:8000/`);

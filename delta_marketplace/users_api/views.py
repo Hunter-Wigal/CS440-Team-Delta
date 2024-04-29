@@ -104,17 +104,17 @@ def user(request: HttpRequest):
         password = "'{}'".format(request.POST['password'])
         # display_name = username
 
+        publisher = True if request.POST['publisher'] == 'true' else False
+
         query = add_user_sql % (username, username, full_name, email, password)
         contents = execute_query(query)
-        
-        publisher = bool(request.POST['publisher'])
         
         if publisher:
             pub_sql = "INSERT INTO Publishers (username, publisher_name, location) VALUES (%s, %s, 'TBD')" % (username, email)
 
             execute_query(pub_sql)
         
-        return HttpResponse(200)
+        return HttpResponse("SUccessfully registered")
     
     # Logging in
     if request.method == "GET":
@@ -122,7 +122,6 @@ def user(request: HttpRequest):
         password = "'{}'".format(request.GET['password'])
         
         login_query = "SELECT * FROM Users WHERE email = %s AND password = %s" % (email, password)
-        print(login_query)
         
         contents = execute_query(login_query)
 

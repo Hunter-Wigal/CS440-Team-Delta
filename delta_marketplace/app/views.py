@@ -119,7 +119,6 @@ def game_resp_to_list(resp: requests.Response, games_key="games"):
     if games_key in resp_dict:
         games: List[Game] = []
         games_list = resp_dict[games_key]
-        print(games_list)
         for item in games_list:
             temp_game = Game(
                 int(item["id"]),

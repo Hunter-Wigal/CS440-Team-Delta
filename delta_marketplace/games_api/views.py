@@ -38,7 +38,12 @@ def execute_query(query: str, results=True):
     if results:
         contents = cursor.fetchall()
         
+        cursor.close()
+        
         return contents
+    
+    cursor.close()
+    database.close()
 
 # Add a user to the database
 def add_user(query: str):
@@ -96,10 +101,14 @@ def get_games(request: HttpRequest):
         genre_choice = request.GET.get('g').lower()
         
         # Change the operator to select genres if the name isn't specified
-        operator = "OR" if game_name == 'none' or genre_choice == 'none' else 'AND'
+        operator = "" #"OR" if game_name == 'none' or genre_choice == 'none' else 'AND'
 
+        if game_name == 'none' or genre_choice == 'none':
+            operator = "OR"
+        else:
+            operator = "AND"
         # Get all games from database
-        query  = f"SELECT * FROM Games WHERE LOWER(title) LIKE '%{game_name}%' {operator} LOWER(genre) LIKE '%{genre_choice}%';"
+        query = "SELECT * FROM Games WHERE LOWER(title) LIKE '%{game}%' {operator} LOWER(genre) LIKE '%{genre}%';".format(game=game_name, operator=operator, genre=genre_choice)
         
         available_games = fetch_games(query)
         

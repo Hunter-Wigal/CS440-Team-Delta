@@ -24,6 +24,8 @@ def execute_query(query: str):
         database.commit()
     
     contents = cursor.fetchall()
+    cursor.close()
+    database.close()
     
     return contents
 

@@ -30,6 +30,9 @@ def execute_query(query: str):
 
     contents = cursor.fetchall()
     
+    cursor.close()
+    database.close()
+    
     return contents
 
 def add_game(request: HttpRequest):

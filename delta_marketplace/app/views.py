@@ -115,10 +115,12 @@ def game_resp_to_list(resp: requests.Response, games_key="games"):
         Game: A list of game objects
     """
     resp_dict = resp.json()
-
+    
     if games_key in resp_dict:
         games: List[Game] = []
-        for item in resp_dict[games_key]:
+        games_list = resp_dict[games_key]
+        print(games_list)
+        for item in games_list:
             temp_game = Game(
                 int(item["id"]),
                 item["name"],
@@ -132,7 +134,7 @@ def game_resp_to_list(resp: requests.Response, games_key="games"):
 
             games.append(temp_game)
 
-            return games
+        return games
         
     else:
         return []
@@ -251,6 +253,8 @@ def search(request: HttpRequest, search_results=[], user=None):
         resp = requests.get(
             "http://127.0.0.1:8000/api/games/get_games?s=%s&g=%s" % (to_search, genre)
         )
+
+        
         search_results = game_resp_to_list(resp)
 
         if search_results != None and len(search_results) < 1:
@@ -260,6 +264,8 @@ def search(request: HttpRequest, search_results=[], user=None):
         # Search can't be an empty string
         if len(to_search) < 1 and genre == "none":
             search_results = None
+            
+        
 
     return render(request, "layouts/search.html", {"results": search_results, "user": user})
 

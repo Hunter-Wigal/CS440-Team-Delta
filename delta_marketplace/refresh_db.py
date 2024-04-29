@@ -16,11 +16,13 @@ cursor = database.cursor()
 print("Dropping database...")
 cursor.execute("""DROP DATABASE IF EXISTS delta_marketplace;""")
 
-os.system("python delta_marketplace\\create_db.py run")
+# os.system("python delta_marketplace\\create_db.py run")
+import create_db
 
 cursor.execute("USE delta_marketplace;")
 
-os.system("python delta_marketplace\\populate.py run")
+# os.system("python delta_marketplace\\populate.py run")
+import populate
 
 print("\nInstalling requirements, please wait...\n")
 os.system("\npip install -r requirements.txt\n")

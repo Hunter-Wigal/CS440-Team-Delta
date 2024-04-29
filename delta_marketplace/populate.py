@@ -3,6 +3,7 @@ import datetime
 from mysql.connector.errors import IntegrityError
 import os
 from dotenv import load_dotenv
+from time import sleep
 
 load_dotenv()
 
@@ -45,7 +46,7 @@ games.append(('COD: Fish at War ', 27376, 'FPS', esrb_to_num('M'), datetime.date
 games.append(('Fun Game 2', 3096, 'Adventure', esrb_to_num('T'), datetime.date(2023,4,15), 'imgs/sample3.png', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'))
 
 collectibles = []
-collectibles.append((403266, 4, 'imgs/item1.png', 'fun item'))
+collectibles.append((403266, 1, 'imgs/item1.png', 'fun item'))
 
 publishers = []
 publishers.append((27376, "user", 'Actifishion', 'Charleston, WV'))
@@ -56,19 +57,29 @@ users.append(("user", "real person", 'Real Person', "user@gmail.com", "temp-pass
 users.append(("bob", "real person", 'Real Person', "bob@gmail.com", "password"))
 
 games_owned = []
-games_owned.append(('bob', 4, datetime.date(1, 1, 1), datetime.date(1, 1, 1)))
-games_owned.append(('bob', 5, datetime.date(1, 1, 1), datetime.date(1, 1, 1)))
+games_owned.append(('bob', 1, datetime.date(1, 1, 1), datetime.date(1, 1, 1)))
+games_owned.append(('bob', 2, datetime.date(1, 1, 1), datetime.date(1, 1, 1)))
 
 collectibles_owned = []
-collectibles_owned.append(('bob', 403266, 4))
+collectibles_owned.append(('bob', 403266, 1))
 
 
+for user in users:
+    try:
+        cursor.execute(users_sql, user)
+        
+    except IntegrityError as e:
+        # Ignore, just just means duplicate entry
+        print(e)
+        pass
+    
 for publisher in publishers:
     try:
         cursor.execute(publishers_sql, publisher)
         
     except IntegrityError as e:
         # Ignore, just just means duplicate entry
+        print(e)
         pass
 
 for game in games:
@@ -77,15 +88,10 @@ for game in games:
         
     except IntegrityError as e:
         # Ignore, just just means duplicate entry
+        print(e)
         pass
-
-for user in users:
-    try:
-        cursor.execute(users_sql, user)
-        
-    except IntegrityError as e:
-        # Ignore, just just means duplicate entry
-        pass
+    
+database.commit()
     
 for game in games_owned:
     try:
@@ -103,6 +109,7 @@ for collectible in collectibles:
     
     except IntegrityError as e:
         # Ignore just just means duplicate entry
+        print(e)
         pass
     
 for collectible in collectibles_owned:
@@ -111,6 +118,7 @@ for collectible in collectibles_owned:
     
     except IntegrityError as e:
         # Ignore just just means duplicate entry
+        print(e)
         pass
 
 

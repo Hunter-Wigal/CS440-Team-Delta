@@ -32,7 +32,7 @@
             border-top-left-radius: 10px;
             border-bottom-left-radius: 10px;
             height: 105pt;
-            width: 256pt;
+            width: 30%;
         }
 
         /* Style for the right box containing game info */
@@ -42,7 +42,8 @@
             height: 105pt;
             border-top-right-radius:10px;
             border-bottom-right-radius: 10px;
-            width: 612pt;
+            
+            width:70%;
         }
 
         /* Add padding between the boxes */
@@ -120,7 +121,7 @@
     <br>
 
     {% for game in games %}
-    <div class="container">
+    <div class="container" style="width:60%; margin:auto;">
         <div class="row align-items-center">
             <div class="col-md-6">
                 <img src="{% static 'imgs/{{game.image_url}}' %}" alt="Game Image" class="img-fluid">

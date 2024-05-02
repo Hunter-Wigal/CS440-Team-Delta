@@ -94,6 +94,29 @@
         }
     </style>
 </head>
+<script>
+    function buyGame(gameID, userID){
+        console.log(userID);
+
+        if (userID == undefined || userID == ""){
+            console.log("Please log in to purchase a game");
+            return;
+        }
+
+        // Make an api call to move the game id to the games owned table
+        respo = $.post("http://127.0.0.1:8000/api/games/purchase", {u: userID, g:gameID, t:"buy"})
+    }
+
+    function rentGame(gameID, userID){
+        if (userID == undefined || userID == ""){
+            console.log("Please log in to purchase a game");
+            return;
+        }
+
+        // Make an api call to move the game id to the games owned table
+        respo = $.post("http://127.0.0.1:8000/api/games/purchase", {u: userID, g:gameID, t:"rent"})
+    }
+</script>
 
 <body class="col align-items-center">
         <h2>Games Recommended For You!</h2><br>
@@ -131,8 +154,8 @@
                 <div class="game-info" style="user-select:none;">
                     <p>ESRB Rating: {{game.esrb}} &nbsp &nbsp Genre: {{game.genre}}</p>
                     <div class="game-info-buttons">
-                        {% comment %} <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#purchaseModal">Buy Game</button> {% endcomment %}
-                        <a class="btn btn-success" href="game/{{game.id}}">View</a>
+                        <button class="btn btn-success me-0" onclick="rentGame('{{result.id}}', '{{user.username}}')" data-bs-toggle="modal" data-bs-target="#purchaseModal">Rent $TBD</button>
+                        <button class="btn btn-info" onclick="buyGame('{{result.id}}', '{{user.username}}')" data-bs-toggle="modal" data-bs-target="#purchaseModal">Buy $TBD</button>
                     </div>
                 </div>
             </div>

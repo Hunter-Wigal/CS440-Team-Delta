@@ -121,8 +121,8 @@
                         <p><b>Rating:</b> {{result.esrb}}</p>
 
                     </div>
-                    <button class="btn btn-success me-0" onclick="rentGame('{{result.id}}', '{{user.username}}')">Rent $TBD</button>
-                    <button class="btn btn-info" onclick="buyGame('{{result.id}}', '{{user.username}}')">Buy $TBD</button>
+                    <button class="btn btn-success me-0" onclick="rentGame('{{result.id}}', '{{user.username}}')" data-bs-toggle="modal" data-bs-target="#purchaseModal">Rent $TBD</button>
+                    <button class="btn btn-info" onclick="buyGame('{{result.id}}', '{{user.username}}')" data-bs-toggle="modal" data-bs-target="#purchaseModal">Buy $TBD</button>
                 </div>
             </div>
             <!-- </div> -->

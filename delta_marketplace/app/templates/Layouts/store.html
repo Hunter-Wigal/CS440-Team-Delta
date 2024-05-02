@@ -124,7 +124,7 @@
     <div class="container" style="width:60%; margin:auto; color:#136F63;">
         <div class="row align-items-center">
             <div class="col-md-6">
-                <img src="{% static 'imgs/{{game.image_url}}' %}" alt="Game Image" class="img-fluid">
+                <img src="{% static game.image_url %}" alt="Game Image" class="img-fluid">
             </div>
             <div class="col-md-5">
                 <a class="nav-link" style="font-size:48px; text-align: left; width:fit-content" href="game/{{game.id}}">{{game.name}}</a>

@@ -28,6 +28,8 @@ class Publisher:
     username: str
     name: str
     location: str
+    full_name: str = "Not provided"
+    email: str = "Not provided"
 
 
 @dataclass
@@ -310,6 +312,8 @@ def publisher_dashboard(request: HttpRequest, pk, user=None):
         publisher_resp["username"],
         publisher_resp["name"],
         publisher_resp["location"],
+        publisher_resp["full_name"],
+        publisher_resp["email"]
     )
     pk = publisher.id
     games_published_resp = requests.get(

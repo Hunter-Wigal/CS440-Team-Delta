@@ -30,21 +30,22 @@
     }
 
     .bio {
+        color:#136F63;
+        background-color: lightgreen;
         flex: 1;
         padding: 20px;
         border-radius: 10px;
-        background-color: #f0f0f0;
         text-align: center;
         margin-bottom: 20px;
     }
 
     .details {
+        color:#136F63;
+        background-color: lightgreen;
         flex: 1;
         padding: 20px;
         border-radius: 10px;
-        background-color: #f0f0f0;
         text-align: center;
-        margin-bottom: 20px;
     }
 </style>
 
@@ -60,14 +61,14 @@
 <body onload="redirect()"></body>
 {% else %}
 
-<body>
-    Welcome {{user.display_name}}
+<div style="height:100vh;">
+    <div style="font-size:48px;">Welcome, {{user.display_name}}</div>
     <!-- Main Content -->
     <div class="container">
         <!-- Profile Picture and Username -->
         <div class="profile">
-            <img src="profile-picture.jpg" alt="Profile Picture">
-            <h3>{{user.username}}</h3>
+            <img src="profile-picture.jpg" alt="No Picture Provided"><br>
+            <button class="btn btn-primary">Change Profile Picture</button>
         </div>
         <!-- Bio -->
         <div class="bio">
@@ -84,7 +85,7 @@
         </div>
     </div>
 
-</body>
+</div>
 {% endif %}
 
 

@@ -172,24 +172,25 @@ def publisher(request: HttpRequest):
         new_query = "SELECT * FROM publishers, users WHERE publishers.username = users.username AND users.username = %s;"
         
         to_return = {}
-        # Format with user information
+        # Format with user information as well as publisher info
         if request.GET.get('i') == None:
-            publisher_result = execute_query(new_query, (pub,))
-            print(publisher_result)
-            
-            publisher_result = publisher_result[0]
-            publisher = {}
-            publisher["id"] = publisher_result[0]
-            publisher["username"] = publisher_result[1]
-            publisher["name"] = publisher_result[2]
-            publisher["location"] = publisher_result[3]
-            
-            publisher["full_name"] = publisher_result[6]
-            publisher["email"] = publisher_result[7]
-            
-            print(publisher)
-            to_return['publisher'] = publisher
-            return JsonResponse(to_return)
+            if len(publisher_result) > 0:
+                publisher_result = execute_query(new_query, (pub,))
+                print(publisher_result)
+                
+                publisher_result = publisher_result[0]
+                publisher = {}
+                publisher["id"] = publisher_result[0]
+                publisher["username"] = publisher_result[1]
+                publisher["name"] = publisher_result[2]
+                publisher["location"] = publisher_result[3]
+                
+                publisher["full_name"] = publisher_result[6]
+                publisher["email"] = publisher_result[7]
+                
+                print(publisher)
+                to_return['publisher'] = publisher
+                return JsonResponse(to_return)
         
         # print(result)
  

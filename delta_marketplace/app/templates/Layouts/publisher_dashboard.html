@@ -59,7 +59,7 @@
                 {% for game_published in games_published %}
                 <!-- <div class="row"> -->
                 <div class="card-custom">
-                    <img src="{{game_published.image}}" alt="An image of {{game_published.name}}" class="card-image">
+                    <img src="{% static game_published.image_url%}" alt="An image of {{game_published.name}}" class="card-image">
                     <div class="card-body-custom">
                         <a href="/game/{{game_published.id}}"><h4 class="game-name">{{game_published.name}}</h4></a>
                         <div class="game-content">

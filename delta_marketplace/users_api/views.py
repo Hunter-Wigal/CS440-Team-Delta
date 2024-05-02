@@ -7,7 +7,7 @@ import json
 import os
 from django.views.decorators.csrf import csrf_exempt
 
-def execute_query(query: str):
+def execute_query(query: str, values: tuple = ()):
     database = mysql.connector.connect(
         host=os.environ.get("DATABASE_HOST"),
         user=os.environ.get("USER"),
@@ -18,7 +18,7 @@ def execute_query(query: str):
     # cursor
     cursor = database.cursor()
 
-    cursor.execute(query)
+    cursor.execute(query, values)
 
     if "INSERT" in query:
         database.commit()
@@ -31,9 +31,9 @@ def execute_query(query: str):
 
 
 # Fetch all user data
-def fetch_user(query: str):
+def fetch_user(query: str, values: tuple = ()):
 
-    contents = execute_query(query)
+    contents = execute_query(query, values)
 
     user = []
 
@@ -53,9 +53,9 @@ def fetch_user(query: str):
     return to_return
 
 # Fetch games owned
-def fetch_gamesOwned(query: str):
+def fetch_gamesOwned(query: str, values: tuple = ()):
 
-    contents = execute_query(query)
+    contents = execute_query(query, values)
 
     gamesOwned = []
 
@@ -98,33 +98,33 @@ def user(request: HttpRequest):
     if request.method == "POST":
         add_user_sql = "INSERT INTO Users (username, display_name, full_name, email, password) VALUES (%s, %s, %s, %s, %s)"
         
-        username = "'{}'".format(request.POST['username'])
-        email = "'{}'".format(request.POST['email'])
-        full_name = "'{}'".format(request.POST['name'])
-        password = "'{}'".format(request.POST['password'])
+        username = request.POST['username']
+        email = request.POST['email']
+        full_name = request.POST['name']
+        password = request.POST['password']
         # display_name = username
 
         publisher = True if request.POST['publisher'] == 'true' else False
 
-        query = add_user_sql % (username, username, full_name, email, password)
-        contents = execute_query(query)
+        contents = execute_query(add_user_sql, (username, username, full_name, email, password))
         
         if publisher:
-            pub_sql = "INSERT INTO Publishers (username, publisher_name, location) VALUES (%s, %s, 'TBD')" % (username, email)
+            pub_sql = "INSERT INTO Publishers (username, publisher_name, location) VALUES (%s, %s, 'TBD')"
 
-            execute_query(pub_sql)
+            execute_query(pub_sql, (username, email))
         
         return HttpResponse("SUccessfully registered")
     
     # Logging in
     if request.method == "GET":
-        email = "'{}'".format(request.GET['email'])
-        password = "'{}'".format(request.GET['password'])
+        email = request.GET['email']
+        password = request.GET['password']
         
-        login_query = "SELECT * FROM Users WHERE email = %s AND password = %s" % (email, password)
+        login_query = "SELECT * FROM Users WHERE email = %s AND password = %s"
         
-        contents = execute_query(login_query)
+        contents = execute_query(login_query, (email, password))
 
+        print(contents)
         success = len(contents) > 0
         
         if success:
@@ -147,10 +147,10 @@ def get_user(request: HttpRequest):
         user_name = request.GET.get("s")
 
         # Get all user data
-        query = f"SELECT * FROM Users WHERE username = '{user_name}';"
+        query = "SELECT * FROM Users WHERE username = %s;"
 
         # Call helper method
-        results = fetch_user(query)
+        results = fetch_user(query, (user_name,))
 
         # Check if the user actually has any data
         if len(results) > 0:
@@ -172,10 +172,10 @@ def get_owned_games(request: HttpRequest):
         user_name = request.GET.get("s")
 
         # Get all games for a user
-        query = f"SELECT * FROM GamesOwned WHERE username = '%{user_name}%';"
+        query = "SELECT * FROM GamesOwned WHERE username = %s;"
 
         # Call helper method
-        results = fetch_gamesOwned(query)
+        results = fetch_gamesOwned(query, (user_name,))
 
         # Check if the user actually has any games
         if len(results) > 0:
@@ -210,7 +210,6 @@ def get_owned_coll(request: HttpRequest):
         # Place the results in a dictionary and return
         to_return = {}
         to_return["collectiblesOwned"] = results
-        response = JsonResponse(to_return)
         return JsonResponse(to_return)
     
     return HttpResponse("test")

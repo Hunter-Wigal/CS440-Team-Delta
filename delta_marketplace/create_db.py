@@ -98,7 +98,7 @@ cursor.execute("""CREATE TABLE IF NOT EXISTS CollectiblesOwned(
         ON DELETE RESTRICT
 );""")
 
-
+cursor.execute("CREATE INDEX i_title ON games(title);")
 cursor.execute("CREATE INDEX i_genre ON games(genre);")
 
 

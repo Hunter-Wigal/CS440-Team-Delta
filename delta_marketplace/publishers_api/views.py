@@ -15,7 +15,7 @@ def esrb_to_num(esrb):
     
     return ratings.index(esrb)
 
-def execute_query(query: str):
+def execute_query(query: str, values: tuple = ()):
     database = mysql.connector.connect(
         host=os.environ.get("DATABASE_HOST"),
         user=os.environ.get("USER"),
@@ -26,7 +26,7 @@ def execute_query(query: str):
     # cursor
     cursor = database.cursor()
 
-    cursor.execute(query)
+    cursor.execute(query, values)
 
     contents = cursor.fetchall()
     

@@ -111,7 +111,7 @@
             {% for result in results%}
             <!-- <div class="row"> -->
             <div class="card-custom">
-                <img src="{{result.image}}" alt="An image of {{result.name}}" class="card-image">
+                <img src="{% static result.image_url%}" alt="An image of {{result.name}}" class="card-image">
                 <div class="card-body-custom">
                     <a href="/game/{{result.id}}">
                         <h4 class="game-name">{{result.name}}</h4>

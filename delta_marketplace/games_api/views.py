@@ -22,7 +22,7 @@ def esrb_to_num(esrb):
     
     return ratings.index(esrb)
 
-def execute_query(query: str, results=True):
+def execute_query(query: str, values: dict = {}, results=True):
     database = mysql.connector.connect(
         host=os.environ.get("DATABASE_HOST"),
         user=os.environ.get("USER"),
@@ -33,7 +33,8 @@ def execute_query(query: str, results=True):
     # cursor
     cursor = database.cursor()
 
-    cursor.execute(query)
+    print(values)
+    cursor.execute(query, values)
     
     if results:
         contents = cursor.fetchall()
@@ -62,8 +63,8 @@ def add_user(query: str):
     return
 
 # Fetch games with a specific game query and return a list of dictionaries
-def fetch_games(query: str):
-    contents = execute_query(query)
+def fetch_games(query: str, values: dict = {}):
+    contents = execute_query(query, values)
 
     games = []
 
@@ -108,10 +109,12 @@ def get_games(request: HttpRequest):
             operator = "OR"
         else:
             operator = "AND"
-        # Get all games from database
-        query = "SELECT * FROM Games WHERE LOWER(title) LIKE '%{game}%' {operator} LOWER(genre) LIKE '%{genre}%';".format(game=game_name, operator=operator, genre=genre_choice)
+            
+        # Formatting used for string that will only ever be 'AND' or 'OR'
+        query = "SELECT * FROM Games WHERE LOWER(title) LIKE %(title)s {operator} LOWER(genre) LIKE %(genre)s;".format(operator=operator)
         
-        available_games = fetch_games(query)
+        values = {'title': "%" + game_name + "%", 'genre': "%" + genre_choice + "%"}
+        available_games = fetch_games(query, values)
         
         # Check if games were actually found before indexing the dictionary
         if len(available_games) > 0:
@@ -134,9 +137,9 @@ def get_publishers_games(request: HttpRequest):
         except ValueError:
             return JsonResponse({'error': 'Invalid publisher_id'})
         
-        query = f"SELECT * FROM games WHERE publisher_id = {publisher_id}"
+        query = f"SELECT * FROM games WHERE publisher_id = %(publisher)s"
         
-        games_published = fetch_games(query)
+        games_published = fetch_games(query, {'publisher': publisher_id})
         
         return JsonResponse(games_published)
     
@@ -155,9 +158,9 @@ def get_user_games(request):
     if request.method == "GET":
         user = request.GET.get('u')
         # Get all games from database
-        query  = f"SELECT * FROM GamesOwned WHERE LOWER(username) LIKE '%{user}%';"
+        query  = f"SELECT * FROM GamesOwned WHERE LOWER(username) LIKE %(user)s;"
         
-        contents = execute_query(query)
+        contents = execute_query(query, {'user': user})
 
         games_owned = []
 
@@ -171,10 +174,10 @@ def get_user_games(request):
             games_owned.append(temp_dict)
         
         
-        query  = "SELECT * FROM Games WHERE game_id={id};"
+        query  = "SELECT * FROM Games WHERE game_id=%(id)s;"
         game_list = []
         for game in games_owned:
-            game_list.append(fetch_games(query.format(id=game['game_id']))['games'][0])
+            game_list.append(fetch_games(query,{'id':game['game_id']})['games'][0])
         
         to_return = {}
         to_return['games_owned'] = games_owned
@@ -192,9 +195,9 @@ def single_game(request: HttpRequest):
         # Set pk to the passed game id
         pk = request.GET.get('g')
         # Define the SQL query to retrieve the game with the specified primary key
-        game_query = "SELECT * FROM games WHERE game_id = {id}".format(id=pk)
+        game_query = "SELECT * FROM games WHERE game_id = %(game)s"
         
-        game = fetch_games(game_query)['games']
+        game = fetch_games(game_query, {'game': pk})['games']
         
         to_return = {}
         to_return['game'] = game
@@ -206,7 +209,6 @@ def single_game(request: HttpRequest):
     if request.method == "POST":
         # Update this with the actual game id
         game_id = 0
-        
         
         min_rating = esrb_to_num('M')
         # Call this when adding a game to ensure the rating is appropriate
@@ -254,9 +256,9 @@ def collectibles_owned(request):
     if request.method == "GET":
         collectibles = []
         username = request.GET['u']
-        collectible_sql = "SELECT * FROM CollectiblesOwned WHERE username = '{user}'".format(user=username)
+        collectible_sql = "SELECT * FROM CollectiblesOwned WHERE username = %(user)s"
         
-        contents = execute_query(collectible_sql)
+        contents = execute_query(collectible_sql, {'user': username})
 
         for row in contents:
             temp_dict = {}
@@ -284,9 +286,9 @@ def purchase(request: HttpRequest):
         if type != "buy":
             owned_end = owned_start + timedelta(30)
         
-        purchase_sql = "INSERT INTO GamesOwned(username, game_id, owned_start, owned_end) VALUES ('%s', '%s', '%s', '%s');" % (userID, gameID, owned_start, owned_end)
+        purchase_sql = "INSERT INTO GamesOwned(username, game_id, owned_start, owned_end) VALUES (%(username)s, %(game_id)s, %(owned_start)s, %(owned_end)s);"
         print(purchase_sql)
-        execute_query(purchase_sql, False)
+        execute_query(purchase_sql, {'username': userID, 'game_id': gameID, 'owned_start': owned_start, 'owned_end': owned_end}, False)
         
         response = HttpResponse()
         response.status_code = 200

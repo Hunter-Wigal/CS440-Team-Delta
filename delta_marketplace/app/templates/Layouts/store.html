@@ -131,7 +131,8 @@
                 <div class="game-info">
                     <p>ESRB Rating: {{game.esrb}} Genre: {{game.genre}}</p>
                     <div class="game-info-buttons">
-                        <a class="btn btn-success" href="game/{{game.id}}">Buy Game</a>
+                        {% comment %} <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#purchaseModal">Buy Game</button> {% endcomment %}
+                        <a class="btn btn-success" href="game/{{game.id}}"></a>
                     </div>
                 </div>
             </div>

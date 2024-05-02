@@ -297,3 +297,16 @@ def purchase(request: HttpRequest):
     response = HttpResponse()
     response.status_code = 401
     return response
+
+
+def get_num_owned(request: HttpRequest):
+    if request.method == "GET":
+        num_owned = -1
+        username = request.GET['s']
+        query = "SELECT COUNT(*) FROM GamesOwned WHERE username = %(username)s;"
+        
+        results = execute_query(query, {'username': username})
+        num_owned = results[0][0]
+        
+        response = JsonResponse({'owned': num_owned})
+        return response

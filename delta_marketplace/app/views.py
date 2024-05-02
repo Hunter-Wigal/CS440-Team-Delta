@@ -209,8 +209,17 @@ def account(request: HttpRequest, user=None):
     else:
         json = resp.json()["user"][0]
         user = User(json["username"], json["dname"], json["full_name"], json["email"])
+        
+    num_games_owned = 0
+    
+    resp = requests.get(
+        "http://127.0.0.1:8000/api/games/num_owned?s={username}".format(username=username)
+    ).json()
+    
+    num_games_owned = int(resp['owned'])
+    print(resp)
 
-    return render(request, "layouts/account.html", {"DEBUG": DEBUG, "user": user})
+    return render(request, "layouts/account.html", {"DEBUG": DEBUG, "user": user, "games_owned": num_games_owned})
 
 @add_user
 def games(request: HttpRequest, user=None):

@@ -282,9 +282,10 @@ def single_game_view(request: HttpRequest, pk, user=None):
     pub_id = game.publisher_id
     # Get the publisher information associated with the id
     publisher_resp = requests.get(
-        "http://127.0.0.1:8000/api/publishers/publisher?p=%s" % (pub_id)
-    ).json()["publisher"]
+        "http://127.0.0.1:8000/api/publishers/publisher?p=%s&i=%s" % (pub_id, 'true')
+    ).json()['publisher']
 
+    print(publisher_resp)
     # Convert the json into a publisher object
     publisher = Publisher(
         publisher_resp["id"],

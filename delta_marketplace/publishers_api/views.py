@@ -160,7 +160,12 @@ def publisher(request: HttpRequest):
     if request.method == "GET":
         # Set publisher to the passed publisher id
         pub = request.GET.get('p')
-        publisher_query = "SELECT * FROM publishers WHERE username = '{id}'".format(id=pub)
+        print(request.GET.get('i'))
+        column_name = "username"
+        if request.GET.get('i') != None:
+            column_name = "publisher_id"
+        
+        publisher_query = "SELECT * FROM publishers WHERE {column} = '{id}'".format(id=pub, column=column_name)
 
         publisher_result = execute_query(publisher_query)
  

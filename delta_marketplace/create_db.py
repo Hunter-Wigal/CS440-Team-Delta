@@ -69,7 +69,7 @@ cursor.execute("""CREATE TABLE IF NOT EXISTS Collectibles(
 
 cursor.execute("""CREATE TABLE IF NOT EXISTS GamesOwned (
     username VARCHAR(30),
-    game_id INT PRIMARY KEY,
+    game_id INT,
     owned_start DATE NOT NULL,
     owned_end DATE,
     FOREIGN KEY (username) REFERENCES Users (username)
@@ -77,7 +77,8 @@ cursor.execute("""CREATE TABLE IF NOT EXISTS GamesOwned (
         ON DELETE RESTRICT,
     FOREIGN KEY (game_id) REFERENCES Games (game_id)
 		ON UPDATE CASCADE
-        ON DELETE RESTRICT
+        ON DELETE RESTRICT,
+    PRIMARY KEY (username, game_id)
 );""")
 
 cursor.execute("""CREATE TABLE IF NOT EXISTS CollectiblesOwned(
@@ -98,7 +99,7 @@ cursor.execute("""CREATE TABLE IF NOT EXISTS CollectiblesOwned(
 );""")
 
 
-cursor.execute("CREATE INDEX i_title ON games(title);")
+cursor.execute("CREATE INDEX i_genre ON games(genre);")
 
 
 database.commit()

@@ -4,7 +4,7 @@ from django.shortcuts import render
 import mysql.connector
 import json
 import os
-from datetime import datetime
+from datetime import datetime, timedelta
 from django.views.decorators.csrf import csrf_exempt
 
 def num_to_esrb(num):
@@ -43,6 +43,7 @@ def execute_query(query: str, results=True):
         return contents
     
     cursor.close()
+    database.commit()
     database.close()
 
 # Add a user to the database
@@ -279,11 +280,11 @@ def purchase(request: HttpRequest):
         type = request.POST["t"]
         
         owned_start = datetime.today().date()
-        owned_end = datetime(3000, 1, 1).date()
+        owned_end = datetime(2100, 1, 1).date()
         if type != "buy":
-            owned_end = owned_start + datetime.today().date() + 30
+            owned_end = owned_start + timedelta(30)
         
-        purchase_sql = "INSERT INTO GamesOwned(username, game_id, owned_start, owned_end) VALUES ('%s', '%s', '%s', '%s')" % (userID, gameID, owned_start, owned_end)
+        purchase_sql = "INSERT INTO GamesOwned(username, game_id, owned_start, owned_end) VALUES ('%s', '%s', '%s', '%s');" % (userID, gameID, owned_start, owned_end)
         print(purchase_sql)
         execute_query(purchase_sql, False)
         

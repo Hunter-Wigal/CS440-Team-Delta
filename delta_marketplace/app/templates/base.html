@@ -279,6 +279,28 @@
   {% block content %}
   {% endblock %}
 
+  <!-- Buy game modal -->
+  <div class="modal fade" id="purchaseModal" tabindex="-1" aria-labelledby="purchaseModal" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header" style="justify-content: space-between;">
+          <h1 class="modal-title fs-5" id="purchaseModalLabel" >Game Purchased</h1>
+          <button class="nav-link" data-bs-dismiss="modal" aria-label="Close">
+            <svg xmlns="http://www.w3.org/2000/svg" width="34" height="34" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16">
+              <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708"/>
+            </svg>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p>Game has been purchased</p>
+        </div>
+        <div class="modal-footer" style="justify-content:center;">
+          Don't have an account? Make one <a class="nav-link" style="padding-left:2px;" data-bs-toggle="modal" data-bs-target="#signupModal">here</a>
+        </div>
+
+      </div>
+    </div>
+  </div>
   <!-- Footer -->
   <footer class="footer">
     <div>

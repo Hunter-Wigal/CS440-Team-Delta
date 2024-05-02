@@ -121,18 +121,18 @@
     <br>
 
     {% for game in games %}
-    <div class="container" style="width:60%; margin:auto;">
+    <div class="container" style="width:60%; margin:auto; color:#136F63;">
         <div class="row align-items-center">
             <div class="col-md-6">
                 <img src="{% static 'imgs/{{game.image_url}}' %}" alt="Game Image" class="img-fluid">
             </div>
             <div class="col-md-5">
-                <a class="nav-link" style="font-size:48px; text-align: left;" href="game/{{game.id}}">{{game.name}}</a>
-                <div class="game-info">
-                    <p>ESRB Rating: {{game.esrb}} Genre: {{game.genre}}</p>
+                <a class="nav-link" style="font-size:48px; text-align: left; width:fit-content" href="game/{{game.id}}">{{game.name}}</a>
+                <div class="game-info" style="user-select:none;">
+                    <p>ESRB Rating: {{game.esrb}} &nbsp &nbsp Genre: {{game.genre}}</p>
                     <div class="game-info-buttons">
                         {% comment %} <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#purchaseModal">Buy Game</button> {% endcomment %}
-                        <a class="btn btn-success" href="game/{{game.id}}"></a>
+                        <a class="btn btn-success" href="game/{{game.id}}">View</a>
                     </div>
                 </div>
             </div>
